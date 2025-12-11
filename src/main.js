@@ -8,6 +8,7 @@ import { SvgDemo2Page } from "./pages/svg-demo2/page.js";
 import { SvgDemo3Page } from "./pages/svg-demo3/page.js";
 import { SvgDemo4Page } from "./pages/svg-demo4/page.js";
 import { SvgDemo5Page } from "./pages/svg-demo5/page.js";
+import { SvgDemo6Page } from "./pages/svg-demo6/page.js";
 
 // Exemple d'utilisation avec authentification
 
@@ -26,6 +27,8 @@ router.addRoute("/svg-demo3", SvgDemo3Page);
 router.addRoute("/svg-demo4", SvgDemo4Page);
 
 router.addRoute("/svg-demo5", SvgDemo5Page);
+
+router.addRoute("/svg-demo6", SvgDemo6Page);
 
 router.addRoute("*", The404Page);
 
