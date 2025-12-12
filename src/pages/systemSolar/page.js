@@ -2,24 +2,64 @@ import { SolarSystemView } from "@/ui/solar-system";
 import { htmlToDOM } from "@/lib/utils.js";
 import template from "./template.html?raw";
 import gsap from "gsap";
+import { Draggable } from "gsap/draggable";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-gsap.registerPlugin(MotionPathPlugin);
+import { setupPanZoom } from "./draggableCanvas.js";
+gsap.registerPlugin(MotionPathPlugin, Draggable);
 
 
 let C = {};
-let panzoom = {
-    state: { x: 0, y: 0, scale: 1 },
-    viewport: null,
-    svg: null,
-    dragging: false,
-    start: { x: 0, y: 0 }
-};
 
+let animationState = {
+    isPlaying: true,
+    animations: [] // Stocke les animations motionPath
+};
 
 C.init = function() {
   return V.init();
 }
 
+C.togglePausePlay = function() {
+    if (animationState.isPlaying) {
+        animationState.animations.forEach(anim => {
+            anim.pause();
+        });
+        animationState.isPlaying = false;
+    } else {
+        animationState.animations.forEach(anim => {
+            anim.play();
+        });
+        animationState.isPlaying = true;
+    }
+    C.updateButtonIcon();
+}
+
+C.updateButtonIcon = function() {
+    const pauseIcon = document.getElementById('pauseIcon');
+    const playIcon = document.getElementById('playIcon');
+    
+    if (animationState.isPlaying) {
+        pauseIcon.style.display = 'block';
+        playIcon.style.display = 'none';
+    } else {
+        pauseIcon.style.display = 'none';
+        playIcon.style.display = 'block';
+    }
+}
+
+
+C.handler_clickStar = function(event) {
+    let teststars = V.solarSystem.getStars();
+    console.log("All stars:", teststars);
+    console.log("Click event:", event.target);
+    let star = event.target.closest('path');
+    console.log("Star clicked:", star);
+
+}
+
+
+
+// a mettre dans animation
 C.rotateStars = function(planets) {
     planets.forEach(systemSkill => {
         let systemSkillLevels = systemSkill.querySelectorAll('[id$="-level1"], [id$="-level2"], [id$="-level3"]');
@@ -27,7 +67,7 @@ C.rotateStars = function(planets) {
             let planetLevels = level.querySelector('[id$="-activities"]');
             let pathAcOrbit = level.querySelector('[id$="-center-orbit"]');
 
-            let stars = planetLevels.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"]');
+            let stars = planetLevels.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"], [id$="-ac4"], [id$="-ac5"], [id$="-ac6"], [id$="-ac7"]');
 
 
             //IA 
@@ -48,8 +88,8 @@ C.rotateStars = function(planets) {
 
             stars.forEach((star, index) => {
                 const start = (offsets[index] + phase) % 1;
-                gsap.to(star, {
-                    duration: 10,
+                const anim = gsap.to(star, {
+                    duration: 30,
                     repeat: -1,
                     ease: "linear",
                     motionPath: {
@@ -60,6 +100,8 @@ C.rotateStars = function(planets) {
                         end: start + 1
                     }
                 });
+                // Stocke l'animation pour la pause/play
+                animationState.animations.push(anim);
             });
         } );
     });
@@ -74,8 +116,8 @@ C.rotateLevels = function(planets) {
             let orbitLevel = systemSkill.querySelectorAll('[id$="level1-orbit"], [id$="level2-orbit"], [id$="level3-orbit"]');
             orbitLevel = orbitLevel[i];
             let offsetRandom = Math.random();
-            gsap.to(systemSkillLevels[i], {
-                duration: 20,
+            const anim = gsap.to(systemSkillLevels[i], {
+                duration: 60,
                 repeat: -1,
                 ease: "linear",
                 motionPath: {
@@ -86,6 +128,8 @@ C.rotateLevels = function(planets) {
                     end: offsetRandom + 1
                 }
             });
+            // Stocke l'animation
+            animationState.animations.push(anim);
         }
     });
 
@@ -100,8 +144,8 @@ C.rotateSolarSystem = function() {
     
     planets.forEach( (planet, index) => {
         let offset = (1 / planets.length) * index;
-        gsap.to(planet, { 
-            duration: 60, 
+        const anim = gsap.to(planet, { 
+            duration: 100, 
             repeat: -1,
             ease: "linear",
             motionPath: { 
@@ -112,83 +156,13 @@ C.rotateSolarSystem = function() {
                 end: offset + 1
             } 
         });
+        // Stocke l'animation
+        animationState.animations.push(anim);
         C.rotateLevels(planets);
         
     } );
     C.rotateStars(planets);
 }
-
-
-// Pan & zoom on the viewport
-C.setupPanZoom = function() {
-    panzoom.viewport = V.rootPage;
-    panzoom.svg = V.solarSystem.dom();
-
-    Object.assign(panzoom.viewport.style, {
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
-        position: "relative",
-        touchAction: "none"
-    });
-    Object.assign(panzoom.svg.style, {
-        width: "100%",
-        height: "100%",
-        userSelect: "none",
-        touchAction: "none"
-    });
-
-    const apply = () => {
-        gsap.set(panzoom.svg, {
-            x: panzoom.state.x,
-            y: panzoom.state.y,
-            scale: panzoom.state.scale,
-            transformOrigin: "0 0"
-        });
-    };
-
-    const clamp = gsap.utils.clamp;
-    const minScale = 0.3;
-    const maxScale = 3;
-
-    const onPointerDown = (e) => {
-        panzoom.dragging = true;
-        panzoom.start = { x: e.clientX - panzoom.state.x, y: e.clientY - panzoom.state.y };
-        panzoom.viewport.setPointerCapture(e.pointerId);
-    };
-    const onPointerMove = (e) => {
-        if (!panzoom.dragging) return;
-        panzoom.state.x = e.clientX - panzoom.start.x;
-        panzoom.state.y = e.clientY - panzoom.start.y;
-        apply();
-    };
-    const onPointerUp = (e) => {
-        panzoom.dragging = false;
-        panzoom.viewport.releasePointerCapture(e.pointerId);
-    };
-
-    const onWheel = (e) => {
-        e.preventDefault();
-        const rect = panzoom.viewport.getBoundingClientRect();
-        const cx = e.clientX - rect.left;
-        const cy = e.clientY - rect.top;
-        const delta = e.deltaY < 0 ? 1.1 : 0.9;
-        const newScale = clamp(minScale, maxScale, panzoom.state.scale * delta);
-        const k = newScale / panzoom.state.scale;
-        panzoom.state.x = cx - k * (cx - panzoom.state.x);
-        panzoom.state.y = cy - k * (cy - panzoom.state.y);
-        panzoom.state.scale = newScale;
-        apply();
-    };
-
-    panzoom.viewport.addEventListener('pointerdown', onPointerDown);
-    panzoom.viewport.addEventListener('pointermove', onPointerMove);
-    panzoom.viewport.addEventListener('pointerup', onPointerUp);
-    panzoom.viewport.addEventListener('pointercancel', onPointerUp);
-    panzoom.viewport.addEventListener('wheel', onWheel, { passive: false });
-
-    apply();
-};
         
 
 let V = {
@@ -201,18 +175,48 @@ V.init = function() {
   V.solarSystem = new SolarSystemView();
   V.rootPage.querySelector('slot[name="svg"]').replaceWith( V.solarSystem.dom() );
 
-  V.attachEvents();
+  V.attachEvents(V.rootPage, V.solarSystem);
   return V.rootPage;
 };
 
-V.attachEvents = function() {
-    C.setupPanZoom();
+V.attachEvents = function(rootPage, solarSystem) {
+    
     C.rotateSolarSystem();
 
-//   V.rootPage.addEventListener('click', C.handler_clickStar);
+    // Setup pause/play button
+    const pausePlayBtn = rootPage.querySelector('#pausePlayBtn');
+    console.log("Pause/Play button:", pausePlayBtn);
+    // pausePlayBtn.addEventListener('click', C.togglePausePlay);
+    if (pausePlayBtn) {
+        pausePlayBtn.addEventListener('click', C.togglePausePlay);
+        
+        // Hover effect on button
+        pausePlayBtn.addEventListener('mouseenter', function() {
+            this.style.background = 'rgba(255, 255, 255, 0.2)';
+            this.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+        });
+        pausePlayBtn.addEventListener('mouseleave', function() {
+            this.style.background = 'rgba(255, 255, 255, 0.1)';
+            this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+        });
+    } else {
+        console.warn('Pause/Play button not found');
+    }
+
+    let starsAC = rootPage.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"]');
+    console.log(starsAC);
+    solarSystem.addAllStarsClickListener(C.handler_clickStar);
+    // V.rootPage.addEventListener('click', C.handler_clickStar);
+    // starsAC.forEach( (star) => {
+    //     star.style.cursor = 'pointer';
+    //     star.addEventListener('click', function() {
+    //         console.log("Star clicked:");
+    //     } );
+    // } );
+    setupPanZoom(rootPage, solarSystem);
 }
 
 
-export function SvgDemo6Page() {
+export function systemSolar() {
   return C.init();
 }

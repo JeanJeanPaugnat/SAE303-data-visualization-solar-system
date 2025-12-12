@@ -1,0 +1,29 @@
+<div style="background-color: #1B1B1B; position: relative;">
+    <button id="pausePlayBtn" style="
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    ">
+        <svg id="pauseIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="4" width="4" height="16" fill="white"/>
+            <rect x="14" y="4" width="4" height="16" fill="white"/>
+        </svg>
+        <svg id="playIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <polygon points="6,4 20,12 6,20" fill="white"/>
+        </svg>
+    </button>
+
+    <slot name="svg"></slot>
+
+</div>
