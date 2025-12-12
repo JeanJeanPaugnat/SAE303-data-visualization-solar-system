@@ -25,7 +25,7 @@ class SolarSystemView {
 
   getStars() {
     // Retourne toutes les étoiles (les cercles avec la classe fill)
-    return this.root.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"]');
+    return this.root.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"], [id$="-ac4"], [id$="-ac5"], [id$="-ac6"], [id$="-ac7"]');
   }
 
   getStarById(id) {

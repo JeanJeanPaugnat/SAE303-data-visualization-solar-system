@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { Draggable } from "gsap/draggable";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { setupPanZoom } from "./draggableCanvas.js";
+import { ModalView } from "@/ui/modal/index.js";
 gsap.registerPlugin(MotionPathPlugin, Draggable);
 
 
@@ -49,12 +50,16 @@ C.updateButtonIcon = function() {
 
 
 C.handler_clickStar = function(event) {
-    let teststars = V.solarSystem.getStars();
-    console.log("All stars:", teststars);
-    console.log("Click event:", event.target);
-    let star = event.target.closest('path');
-    console.log("Star clicked:", star);
-
+    const star = event.currentTarget;
+    const starId = star.id;
+    console.log("Star clicked:", starId);
+    // Affiche une modale avec des infos sur l'étoile
+    const modal = new ModalView();
+    modal.dom().querySelector('p').textContent = `Informations sur l'étoile ${starId}`;
+    document.body.appendChild(modal.dom());
+    modal.dom().addEventListener('click', () => {
+        document.body.removeChild(modal.dom());
+    });
 }
 
 
@@ -203,9 +208,10 @@ V.attachEvents = function(rootPage, solarSystem) {
         console.warn('Pause/Play button not found');
     }
 
-    let starsAC = rootPage.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"]');
+    let starsAC = rootPage.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"], [id$="-ac4"], [id$="-ac5"], [id$="-ac6"], [id$="-ac7"]');
     console.log(starsAC);
     solarSystem.addAllStarsClickListener(C.handler_clickStar);
+
     // V.rootPage.addEventListener('click', C.handler_clickStar);
     // starsAC.forEach( (star) => {
     //     star.style.cursor = 'pointer';

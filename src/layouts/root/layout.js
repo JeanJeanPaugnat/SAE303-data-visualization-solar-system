@@ -2,6 +2,7 @@ import template from "./template.html?raw";
 import { htmlToDOM } from "@/lib/utils.js";
 import { HeaderView } from "@/ui/header/index.js";
 import { FooterView } from "@/ui/footer/index.js";
+import { ModalView } from "@/ui/modal/index.js";
 
 
 
