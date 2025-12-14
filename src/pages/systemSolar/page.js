@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { Draggable } from "gsap/draggable";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { setupPanZoom } from "./draggableCanvas.js";
-import { ModalView } from "@/ui/modal/index.js";
+import { ModalView } from "@/ui/modal";
 gsap.registerPlugin(MotionPathPlugin, Draggable);
 
 
@@ -53,13 +53,17 @@ C.handler_clickStar = function(event) {
     const star = event.currentTarget;
     const starId = star.id;
     console.log("Star clicked:", starId);
-    // Affiche une modale avec des infos sur l'étoile
     const modal = new ModalView();
-    modal.dom().querySelector('p').textContent = `Informations sur l'étoile ${starId}`;
-    document.body.appendChild(modal.dom());
-    modal.dom().addEventListener('click', () => {
-        document.body.removeChild(modal.dom());
+    let mainContainer = document.querySelector('#mainContainer');
+    console.log(mainContainer);
+    let svgContainer = mainContainer.querySelector('#svgContainer');
+    console.log(mainContainer.querySelector('#svgContainer'));
+    mainContainer.insertBefore(modal.dom(), svgContainer);
+    modal.dom().querySelector('.close-btn').addEventListener('click', () => {
+        console.log("Modal closed");
+        V.rootPage.removeChild(modal.dom());
     });
+
 }
 
 
@@ -178,6 +182,7 @@ let V = {
 V.init = function() {
   V.rootPage = htmlToDOM(template);
   V.solarSystem = new SolarSystemView();
+
   V.rootPage.querySelector('slot[name="svg"]').replaceWith( V.solarSystem.dom() );
 
   V.attachEvents(V.rootPage, V.solarSystem);
@@ -209,7 +214,6 @@ V.attachEvents = function(rootPage, solarSystem) {
     }
 
     let starsAC = rootPage.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"], [id$="-ac4"], [id$="-ac5"], [id$="-ac6"], [id$="-ac7"]');
-    console.log(starsAC);
     solarSystem.addAllStarsClickListener(C.handler_clickStar);
 
     // V.rootPage.addEventListener('click', C.handler_clickStar);

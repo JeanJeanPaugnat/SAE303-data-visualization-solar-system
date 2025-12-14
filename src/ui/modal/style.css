@@ -1,0 +1,263 @@
+:root {
+    --bg-dark: #050e18;
+    --bg-card: #030b13; /* Très sombre, presque noir */
+    --primary-cyan: #00d4ff;
+    --text-white: #ffffff;
+    --text-muted: #a0aab8;
+    --border-color: #1a2736;
+    --badge-bg: rgba(0, 212, 255, 0.1);
+    --input-bg: #07121d;
+    --font-main: 'Inter', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+}
+
+/* --- Style de la Carte --- */
+.card {
+    z-index: 100;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-dark);
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    margin: 1.2rem;
+    /* Arrondi spécial en bas à droite comme sur l'image */
+    border-radius: 20px 20px 60px 20px;
+    border: 1px solid #112233;
+    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.05);
+}
+
+/* --- Header --- */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.badge {
+    border: 1px solid #1c3a4d;
+    color: var(--primary-cyan); /* Cyan plus clair pour le texte */
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: radial-gradient(circle, rgba(9,35,51,1) 0%, rgba(5,14,24,1) 100%);
+    opacity: 0.8;
+}
+
+.close-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--primary-cyan);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.close-btn:hover {
+    background: rgba(0, 212, 255, 0.1);
+}
+
+/* --- Titre et Description --- */
+.title {
+    font-family: var(--font-mono);
+    color: var(--primary-cyan);
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
+
+.description {
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+/* --- Métriques (Slider + Cercle) --- */
+.metrics-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.label-text {
+    display: block;
+    color: var(--primary-cyan);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+.slider-container {
+    flex: 1;
+}
+
+/* Style du slider (Range) */
+.custom-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #112233;
+    border-radius: 5px;
+    outline: none;
+    position: relative;
+}
+
+/* La barre de progression visuelle (hack CSS simple pour l'effet rempli) */
+.custom-slider::-webkit-slider-runnable-track {
+    background: linear-gradient(90deg, var(--primary-cyan) 74%, #112233 74%);
+    height: 8px;
+    border-radius: 5px;
+}
+
+.custom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-cyan);
+    cursor: pointer;
+    margin-top: -6px; /* Centrer le thumb */
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+/* --- Cercle de Progression --- */
+.progress-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.circular-progress {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    /* Utilisation de conic-gradient pour créer le cercle */
+    background: conic-gradient(
+        var(--primary-cyan) calc(var(--percent) * 1%), 
+        #112233 0deg
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Le trou du donut (masque) */
+.circular-progress::before {
+    content: "";
+    position: absolute;
+    width: 88px;
+    height: 88px;
+    background-color: var(--bg-dark);
+    border-radius: 50%;
+}
+
+.progress-value {
+    position: relative;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-cyan);
+    font-family: var(--font-mono);
+    z-index: 2;
+}
+
+/* --- Section Input --- */
+.input-section {
+    margin-bottom: 30px;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    background-color: rgba(6, 15, 25, 0.5);
+    border: 1px solid #1c3a4d;
+    border-radius: 12px;
+    color: var(--text-muted);
+    font-family: var(--font-main);
+    font-size: 0.95rem;
+    resize: none;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: var(--primary-cyan);
+    color: var(--text-white);
+}
+
+textarea::placeholder {
+    color: #3b4c5d;
+}
+
+/* --- Actions (Boutons) --- */
+.actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 40px; /* Espace avant le footer */
+}
+
+.btn {
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary-cyan);
+    color: #fff;
+    flex: 1; /* Prend tout l'espace disponible */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    background-color: #00b8e6;
+}
+
+.btn-primary i {
+    font-size: 1.2rem;
+}
+
+.btn-secondary {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid #2a3b4c;
+    color: #a0aab8;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* --- Footer (Ligne et Meta) --- */
+.card-footer {
+    border-top: 1px solid #1c2c3e;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #4a5b6c;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
