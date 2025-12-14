@@ -1,23 +1,26 @@
 <div class="card">
         <div class="card-header">
-            <span class="badge">CONCEVOIR - NIVEAU 2</span>
-            <button class="close-btn"><i class="ri-close-line"></i></button>
+            <span class="badge">{{competence}} - NIVEAU {{niveau}}</span>
+            <button class="close-btn"><i class="ri-close-line"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 5L5 15" stroke="{{color}}" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5 5L15 15" stroke="{{color}}" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></i></button>
         </div>
 
-        <h1 class="title">AC22.02</h1>
+        <h1 class="title">{{code}}</h1>
         <p class="description">
-            Favoriser l'engagement de l'utilisateur (conception éditoriale, UX writing, design d'interaction)
+            {{libelle}}
         </p>
 
         <div class="metrics-row">
             <div class="slider-container">
                 <label class="label-text">NIVEAU D'ACQUISITION</label>
-                <input type="range" min="0" max="100" value="74" class="custom-slider">
+                <input type="range" min="0" max="100" value="0" class="custom-slider">
             </div>
 
             <div class="progress-container">
-                <div class="circular-progress" style="--percent: 74;">
-                    <span class="progress-value">74%</span>
+                <div class="circular-progress" style="--percent: 0;">
+                    <span class="progress-value">0%</span>
                 </div>
             </div>
         </div>
@@ -29,13 +32,18 @@
 
         <div class="actions">
             <button class="btn btn-primary">
-                <i class="ri-save-line"></i> Sauvegarder
+                <i class="ri-save-line"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.1333 2C10.485 2.00501 10.8205 2.14878 11.0667 2.4L13.6 4.93333C13.8512 5.17951 13.995 5.51497 14 5.86667V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H10.1333Z" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.3307 13.9993V9.33268C11.3307 9.15587 11.2605 8.9863 11.1355 8.86128C11.0104 8.73625 10.8409 8.66602 10.6641 8.66602H5.33073C5.15392 8.66602 4.98435 8.73625 4.85932 8.86128C4.7343 8.9863 4.66406 9.15587 4.66406 9.33268V13.9993" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.66406 2V4.66667C4.66406 4.84348 4.7343 5.01305 4.85932 5.13807C4.98435 5.2631 5.15392 5.33333 5.33073 5.33333H9.9974" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</i> Sauvegarder
             </button>
             <button class="btn btn-secondary">Annuler</button>
         </div>
 
         <div class="card-footer">
-            <span class="meta-id">AC ID: CONC-2-AC2</span>
-            <span class="meta-status">STATUS: VALIDÉ</span>
+            <span class="meta-id">AC ID: {{code}}</span>
+            <span class="meta-status"> </span>
         </div>
     </div>

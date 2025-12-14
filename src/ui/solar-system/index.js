@@ -42,6 +42,16 @@ class SolarSystemView {
     }
   }
 
+  addAllStarsHoverListener(hoverCallback, outCallback) {
+    // Ajoute des listeners de hover sur toutes les étoiles
+    const stars = this.getStars();
+    stars.forEach(star => {
+      star.addEventListener('mouseenter', hoverCallback);
+      star.addEventListener('mouseleave', outCallback);
+      star.style.cursor = 'pointer';
+    });
+  }
+
   addAllStarsClickListener(callback) {
     // Ajoute un listener de click sur toutes les étoiles
     const stars = this.getStars();

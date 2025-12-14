@@ -1,7 +1,9 @@
 :root {
     --bg-dark: #050e18;
     --bg-card: #030b13; /* Très sombre, presque noir */
-    --primary-cyan: #00d4ff;
+    --primary-color: #00D0FF;
+    /* less saturation: color-mix(in srgb, var(--primary-color) 80%, gray 20%); */
+    --darkened-primary: calc(var(--primary-color) * 0.8);
     --text-white: #ffffff;
     --text-muted: #a0aab8;
     --border-color: #1a2736;
@@ -13,6 +15,7 @@
 
 /* --- Style de la Carte --- */
 .card {
+    --color-onweb: var(--primary-color);
     z-index: 100;
     position: absolute;
     display: flex;
@@ -38,7 +41,7 @@
 
 .badge {
     border: 1px solid #1c3a4d;
-    color: var(--primary-cyan); /* Cyan plus clair pour le texte */
+    color: var(--color-onweb); /* Cyan plus clair pour le texte */
     font-size: 0.75rem;
     padding: 6px 12px;
     border-radius: 20px;
@@ -51,7 +54,7 @@
 .close-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-color);
-    color: var(--primary-cyan);
+    color: var(--color-onweb);
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -69,7 +72,7 @@
 /* --- Titre et Description --- */
 .title {
     font-family: var(--font-mono);
-    color: var(--primary-cyan);
+    color: var(--color-onweb);
     font-size: 2.5rem;
     margin-bottom: 15px;
     letter-spacing: -1px;
@@ -93,7 +96,7 @@
 
 .label-text {
     display: block;
-    color: var(--primary-cyan);
+    color: var(--color-onweb);
     font-size: 0.85rem;
     text-transform: uppercase;
     margin-bottom: 12px;
@@ -106,6 +109,7 @@
 
 /* Style du slider (Range) */
 .custom-slider {
+    --slider-percent: 0%;
     -webkit-appearance: none;
     width: 100%;
     height: 8px;
@@ -117,7 +121,7 @@
 
 /* La barre de progression visuelle (hack CSS simple pour l'effet rempli) */
 .custom-slider::-webkit-slider-runnable-track {
-    background: linear-gradient(90deg, var(--primary-cyan) 74%, #112233 74%);
+    background: linear-gradient(90deg, var(--color-onweb) var(--slider-percent), #112233 var(--slider-percent));
     height: 8px;
     border-radius: 5px;
 }
@@ -128,7 +132,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: var(--primary-cyan);
+    background: var(--color-onweb);
     cursor: pointer;
     margin-top: -6px; /* Centrer le thumb */
     box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
@@ -147,7 +151,7 @@
     border-radius: 50%;
     /* Utilisation de conic-gradient pour créer le cercle */
     background: conic-gradient(
-        var(--primary-cyan) calc(var(--percent) * 1%), 
+        var(--color-onweb) calc(var(--percent) * 1%), 
         #112233 0deg
     );
     display: flex;
@@ -170,7 +174,7 @@
     position: relative;
     font-size: 1.8rem;
     font-weight: 600;
-    color: var(--primary-cyan);
+    color: var(--color-onweb);
     font-family: var(--font-mono);
     z-index: 2;
 }
@@ -194,7 +198,7 @@ textarea {
 }
 
 textarea:focus {
-    border-color: var(--primary-cyan);
+    border-color: var(--color-onweb);
     color: var(--text-white);
 }
 
@@ -220,7 +224,7 @@ textarea::placeholder {
 }
 
 .btn-primary {
-    background-color: var(--primary-cyan);
+    background-color: var(--color-onweb);
     color: #fff;
     flex: 1; /* Prend tout l'espace disponible */
     display: flex;
@@ -230,7 +234,7 @@ textarea::placeholder {
 }
 
 .btn-primary:hover {
-    background-color: #00b8e6;
+    background-color: var(--darkened-primary);
 }
 
 .btn-primary i {

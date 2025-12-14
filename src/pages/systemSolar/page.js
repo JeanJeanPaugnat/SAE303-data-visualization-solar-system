@@ -6,6 +6,9 @@ import { Draggable } from "gsap/draggable";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { setupPanZoom } from "./draggableCanvas.js";
 import { ModalView } from "@/ui/modal";
+import { D } from "./searching.js";
+
+
 gsap.registerPlugin(MotionPathPlugin, Draggable);
 
 
@@ -50,21 +53,49 @@ C.updateButtonIcon = function() {
 
 
 C.handler_clickStar = function(event) {
+    D.getStarDataByInfo(event.currentTarget.dataset.acs);
+
     const star = event.currentTarget;
     const starId = star.id;
     console.log("Star clicked:", starId);
     const modal = new ModalView();
     let mainContainer = document.querySelector('#mainContainer');
-    console.log(mainContainer);
+
     let svgContainer = mainContainer.querySelector('#svgContainer');
-    console.log(mainContainer.querySelector('#svgContainer'));
-    mainContainer.insertBefore(modal.dom(), svgContainer);
-    modal.dom().querySelector('.close-btn').addEventListener('click', () => {
-        console.log("Modal closed");
-        V.rootPage.removeChild(modal.dom());
+    
+    if (mainContainer.querySelector('.card')) {
+            mainContainer.querySelector('.card').remove();
+            mainContainer.insertBefore(modal.dom(D.oneStarData), svgContainer);
+    }else {
+            mainContainer.insertBefore(modal.dom(D.oneStarData), svgContainer);
+    }
+    
+    // Appliquer la couleur dynamique au modal
+    const cardElement = mainContainer.querySelector('.card');
+    if (cardElement && D.oneStarData && D.oneStarData.color) {
+        cardElement.style.setProperty('--primary-color', D.oneStarData.color);
+        console.log("Couleur appliquée:", D.oneStarData.color);
+    }
+    
+    mainContainer.querySelector('.close-btn').addEventListener('click', () => {
+        mainContainer.removeChild(mainContainer.querySelector('.card'));
     });
+    // updateMetricsProgress();
 
 }
+
+C.handler_hoverOutStar = function(event) {
+    const star = event.currentTarget;
+        star.style.transform = 'scale(1)';
+}
+
+C.handler_hoverStar = function(event) {
+
+        const star = event.currentTarget;
+        star.style.transform = 'scale(1.2)';
+
+}
+
 
 
 
@@ -215,14 +246,8 @@ V.attachEvents = function(rootPage, solarSystem) {
 
     let starsAC = rootPage.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"], [id$="-ac4"], [id$="-ac5"], [id$="-ac6"], [id$="-ac7"]');
     solarSystem.addAllStarsClickListener(C.handler_clickStar);
+    // solarSystem.addAllStarsHoverListener(C.handler_hoverStar, C.handler_hoverOutStar);
 
-    // V.rootPage.addEventListener('click', C.handler_clickStar);
-    // starsAC.forEach( (star) => {
-    //     star.style.cursor = 'pointer';
-    //     star.addEventListener('click', function() {
-    //         console.log("Star clicked:");
-    //     } );
-    // } );
     setupPanZoom(rootPage, solarSystem);
 }
 
