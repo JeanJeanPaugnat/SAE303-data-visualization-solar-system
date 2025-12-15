@@ -38,7 +38,7 @@ D.getStarDataByInfo = async function(starId) {
                                 }else if (competence.numero === 5){
                                     color = "#77FF00";
                                 }   
-                                
+                            console.log("Determined color:", color);
                             D.oneStarData = {
                                 code: ac.code,
                                 libelle: ac.libelle,
@@ -46,6 +46,8 @@ D.getStarDataByInfo = async function(starId) {
                                 competence: competence.nom_court,
                                 color: color
                             };
+                            console.log("oneStarData set to:", D.oneStarData);
+                            return D.oneStarData;
                         }
                     }
                 }

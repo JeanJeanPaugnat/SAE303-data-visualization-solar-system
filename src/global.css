@@ -10,6 +10,7 @@
 @import "./ui/spinner/style.css";
 @import "./ui/star/style.css";
 @import "./ui/modal/style.css";
+@import "./ui/solar-system/style.css";
 
 :root {
   /* Primitives Tokens */

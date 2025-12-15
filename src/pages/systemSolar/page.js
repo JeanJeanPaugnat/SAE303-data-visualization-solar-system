@@ -38,6 +38,10 @@ C.togglePausePlay = function() {
     C.updateButtonIcon();
 }
 
+C.hoverOnStar = function(star) {
+    star.style.transform = 'scale(1.2)';
+}
+
 C.updateButtonIcon = function() {
     const pauseIcon = document.getElementById('pauseIcon');
     const playIcon = document.getElementById('playIcon');
@@ -52,10 +56,10 @@ C.updateButtonIcon = function() {
 }
 
 
-C.handler_clickStar = function(event) {
-    D.getStarDataByInfo(event.currentTarget.dataset.acs);
-
+C.handler_clickStar = async function(event) {
+    let starData = await D.getStarDataByInfo(event.currentTarget.dataset.acs);
     const star = event.currentTarget;
+    console.log("Clicked star element:", event.currentTarget);
     const starId = star.id;
     console.log("Star clicked:", starId);
     const modal = new ModalView();
@@ -65,16 +69,16 @@ C.handler_clickStar = function(event) {
     
     if (mainContainer.querySelector('.card')) {
             mainContainer.querySelector('.card').remove();
-            mainContainer.insertBefore(modal.dom(D.oneStarData), svgContainer);
+            mainContainer.insertBefore(modal.dom(starData), svgContainer);
     }else {
-            mainContainer.insertBefore(modal.dom(D.oneStarData), svgContainer);
+            mainContainer.insertBefore(modal.dom(starData), svgContainer);
     }
     
     // Appliquer la couleur dynamique au modal
     const cardElement = mainContainer.querySelector('.card');
-    if (cardElement && D.oneStarData && D.oneStarData.color) {
-        cardElement.style.setProperty('--primary-color', D.oneStarData.color);
-        console.log("Couleur appliquée:", D.oneStarData.color);
+    if (cardElement && starData && starData.color) {
+        cardElement.style.setProperty('--primary-color', starData.color);
+        console.log("Couleur appliquée:", starData.color);
     }
     
     mainContainer.querySelector('.close-btn').addEventListener('click', () => {
@@ -211,6 +215,7 @@ let V = {
 };
 
 V.init = function() {
+  D.loadStarsData();
   V.rootPage = htmlToDOM(template);
   V.solarSystem = new SolarSystemView();
 
@@ -246,8 +251,13 @@ V.attachEvents = function(rootPage, solarSystem) {
 
     let starsAC = rootPage.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"], [id$="-ac4"], [id$="-ac5"], [id$="-ac6"], [id$="-ac7"]');
     solarSystem.addAllStarsClickListener(C.handler_clickStar);
-    // solarSystem.addAllStarsHoverListener(C.handler_hoverStar, C.handler_hoverOutStar);
-
+    // starsAC.forEach(star => {
+    //     console.log("Adding hover listener to star:", star);
+    //     star.addEventListener('mouseenter', C.hoverOnStar(star));
+        
+    // });
+    // solarSystem.addAllStarsHoverListener(C.hoverOnStar, C.hoverOutStar);
+    
     setupPanZoom(rootPage, solarSystem);
 }
 
