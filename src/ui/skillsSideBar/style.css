@@ -1,0 +1,98 @@
+
+
+.container {
+    width: 250px;
+    padding: 20px;
+    z-index: 50;;
+    position: absolute;
+    bottom: 0px;
+    padding: 2rem;
+}
+
+/* Titre */
+.title {
+    color: #00bcd4; /* Cyan */
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+/* Liste des compétences */
+.skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Espace entre les boîtes */
+}
+
+/* Carte de compétence individuelle */
+.skill-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ecarte le texte du pourcentage */
+    padding: 6px 10px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.02); /* Fond semi-transparent */
+    border: 0.6px solid; /* La couleur vient des variables ci-dessous */
+    transition: transform 0.2s ease;
+}
+
+.skill-card:hover {
+    transform: translateX(5px);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Le point rond */
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+/* Texte principal */
+.label {
+    flex-grow: 1; /* Pousse le pourcentage vers la droite */
+    font-size: 0.8rem;
+}
+
+/* Pourcentage */
+.percentage {
+    font-weight: bold;
+}
+
+/* --- Gestion des Couleurs --- */
+
+/* Jaune */
+.color-yellow {
+    border-color: #FFEA00;
+    color: #FFEA00;
+}
+.color-yellow .dot { background-color: #FFEA00; }
+
+/* Bleu */
+.color-blue {
+    border-color: #00D0FF;
+    color: #00D0FF;
+}
+.color-blue .dot { background-color: #00D0FF; }
+
+/* Violet */
+.color-purple {
+    border-color: #FB00FF;
+    color: #FB00FF;
+}
+.color-purple .dot { background-color: #FB00FF; }
+
+/* Vert / Teal */
+.color-green {
+    border-color: #77FF00;
+    color: #77FF00;
+}
+.color-green .dot { background-color: #77FF00; }
+
+/* Rouge */
+.color-red {
+    border-color: #FF0000;
+    color: #FF0000;
+}
+.color-red .dot { background-color: #FF0000; }

@@ -21,7 +21,8 @@ These are the main functionalities of the application.
 Immediate tasks and bugs to address.
 
 ### High Priority
-- [ ] **Bugfix**: Fix the display issue where nothing appears on the first interaction with an "Apprentissage Critique" (AC).
+- [X] **Bugfix**: Fix the display issue where nothing appears on the first interaction with an "Apprentissage Critique" (AC).
+- [ ] **Searching System**: enhance the searching method to explore it by AC numerotation, corresponding by skill/level/AC
 - [ ] **Quick Info**: Implement a hover effect on ACs for a quick summary.
 - [ ] **Enhanced UI**: Add more on-screen details:
     - [ ] Real-time skill completion percentage.
@@ -47,3 +48,5 @@ Potential features for future versions.
 
 - [ ] **Pentagonal Graph**: Add a pentagonal radar chart for an alternative data visualization of skills.
 - [ ] **Easter Egg**: Add a hidden surprise! 🥚
+
+

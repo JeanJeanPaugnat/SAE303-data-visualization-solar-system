@@ -6,7 +6,10 @@ import { Draggable } from "gsap/draggable";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { setupPanZoom } from "./draggableCanvas.js";
 import { ModalView } from "@/ui/modal";
-import { D } from "./searching.js";
+import { Star } from "../../data/searchingStar.js";
+import { HeadeskillsSideBarView } from "@/ui/skillsSideBar";
+import { Animation } from "@/lib/animation.js";
+import { featuresView } from "../../ui/features/index.js";
 
 
 gsap.registerPlugin(MotionPathPlugin, Draggable);
@@ -57,7 +60,8 @@ C.updateButtonIcon = function() {
 
 
 C.handler_clickStar = async function(event) {
-    let starData = await D.getStarDataByInfo(event.currentTarget.dataset.acs);
+    let starData = await Star.getStarDataById(event.currentTarget.dataset.acs);
+
     const star = event.currentTarget;
     console.log("Clicked star element:", event.currentTarget);
     const starId = star.id;
@@ -74,16 +78,12 @@ C.handler_clickStar = async function(event) {
             mainContainer.insertBefore(modal.dom(starData), svgContainer);
     }
     
-    // Appliquer la couleur dynamique au modal
     const cardElement = mainContainer.querySelector('.card');
     if (cardElement && starData && starData.color) {
         cardElement.style.setProperty('--primary-color', starData.color);
         console.log("Couleur appliquée:", starData.color);
     }
     
-    mainContainer.querySelector('.close-btn').addEventListener('click', () => {
-        mainContainer.removeChild(mainContainer.querySelector('.card'));
-    });
     // updateMetricsProgress();
 
 }
@@ -103,7 +103,7 @@ C.handler_hoverStar = function(event) {
 
 
 
-// a mettre dans animation
+// a mettre dans animation ??? fixe ce bug
 C.rotateStars = function(planets) {
     planets.forEach(systemSkill => {
         let systemSkillLevels = systemSkill.querySelectorAll('[id$="-level1"], [id$="-level2"], [id$="-level3"]');
@@ -150,6 +150,10 @@ C.rotateStars = function(planets) {
         } );
     });
 }
+
+
+
+
 
 C.rotateLevels = function(planets) {
 
@@ -215,15 +219,19 @@ let V = {
 };
 
 V.init = function() {
-  D.loadStarsData();
+  Star.loadStarsData();
   V.rootPage = htmlToDOM(template);
   V.solarSystem = new SolarSystemView();
 
   V.rootPage.querySelector('slot[name="svg"]').replaceWith( V.solarSystem.dom() );
-
+  V.rootPage.appendChild( new HeadeskillsSideBarView().dom() );
+    V.rootPage.appendChild( new featuresView().dom() );
+//   Animation.draggable('#container-skills', V.rootPage);
   V.attachEvents(V.rootPage, V.solarSystem);
   return V.rootPage;
 };
+
+
 
 V.attachEvents = function(rootPage, solarSystem) {
     
@@ -251,6 +259,9 @@ V.attachEvents = function(rootPage, solarSystem) {
 
     let starsAC = rootPage.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"], [id$="-ac4"], [id$="-ac5"], [id$="-ac6"], [id$="-ac7"]');
     solarSystem.addAllStarsClickListener(C.handler_clickStar);
+
+
+
     // starsAC.forEach(star => {
     //     console.log("Adding hover listener to star:", star);
     //     star.addEventListener('mouseenter', C.hoverOnStar(star));

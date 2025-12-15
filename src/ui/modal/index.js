@@ -95,7 +95,24 @@ class ModalView {
         });
       }
 
-      return element;
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.appendChild(element);
+
+      overlay.addEventListener('click', e => {
+        if (e.target === overlay) {
+          overlay.remove();
+        }
+      });
+
+      const closeBtn = element.querySelector('.close-btn');
+      if(closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          overlay.remove();
+        });
+      }
+
+      return overlay;
     }
 }
 

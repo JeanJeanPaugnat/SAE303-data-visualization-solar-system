@@ -1,0 +1,55 @@
+/* Conteneur pour aligner les boutons horizontalement */
+.actions-container {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 52;
+    display: flex;
+    gap: 20px; /* Espace entre les boutons */
+    justify-content: center;
+
+    padding: 15px 25px;
+
+}
+
+/* Style général du bouton */
+.btn-outline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espace entre l'icône et le texte */
+    
+    background-color: #081c278a; /* Fond transparent */
+    border: 1px solid #1a6f78; /* Bordure cyan sombre (au repos) */
+    color: #00bcd4; /* Texte cyan */
+    
+    padding: 12px 24px;
+    border-radius: 12px; /* Arrondi des coins */
+    
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    
+    transition: all 0.3s ease;
+}
+
+/* Style de l'icône SVG à l'intérieur */
+.btn-outline svg {
+    stroke: #00bcd4;
+    transition: stroke 0.3s ease;
+}
+
+/* Effet au survol (Hover) */
+.btn-outline:hover {
+    border-color: #00bcd4; /* La bordure devient plus brillante */
+    background-color: rgba(0, 188, 212, 0.1); /* Fond légèrement teinté */
+    transform: translateY(-2px); /* Petit effet de levée */
+    box-shadow: 0 4px 12px rgba(0, 188, 212, 0.2); /* Lueur */
+}
+
+/* Effet au clic (Active) */
+.btn-outline:active {
+    transform: translateY(0);
+}

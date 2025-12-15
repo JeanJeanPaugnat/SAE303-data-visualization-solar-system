@@ -1,6 +1,7 @@
 import { gsap } from "gsap";
 import DrawSVGPlugin from "gsap/DrawSVGPlugin";
-gsap.registerPlugin(DrawSVGPlugin);
+import { Draggable } from "gsap/draggable";
+gsap.registerPlugin(DrawSVGPlugin, Draggable);
 
 let Animation = {};
 
@@ -82,6 +83,21 @@ Animation.bounce = function (element, duration = 1, height = 100) {
     transformOrigin: "50% 100%",
   });
 };
+
+// Animation.draggable = function (element, bounds) {
+//   console.log("Making element draggable:", element, "with bounds:", bounds);
+//     Draggable.create(element, {
+//     type: 'y',
+//     bounds: bounds,
+//     inertia: true,
+//     onClick: function () {
+//       console.log('clicked');
+//     },
+//     onDragEnd: function () {
+//       console.log('drag ended');
+//     }
+//   });
+// };
 
 
 export { Animation };
