@@ -49,23 +49,47 @@ class ModalView {
     }
   }
 
+  addLocalStorageListener(key, element) {
+    let storedValue = localStorage.getItem(key);
+    if (storedValue !== null) {
+      element.value = storedValue;
+      this.updateProgress(storedValue, this.root.querySelector('.circular-progress'), element, this.root.querySelector('.progress-value'), this.root.querySelector('.meta-status'));
+    }
+    element.addEventListener('input', (e) => {
+      localStorage.setItem(key, e.target.value);
+    });
+  }
+
     html(data) {
       return genericRenderer(template, data);
     }
 
     dom(data) {
       const element = htmlToDOM(genericRenderer(template, data));
-      // Setup listeners for the new DOM element
+      let numberAC = element.querySelector('.title').textContent;
+      let buttons = element.querySelectorAll('.btn');
+      console.log(buttons);
+      for (let btn of buttons) {
+        console.log('c ici que ça bug');
+        
+        if (btn.textContent.includes('Sauvegarder')) {
+          btn.addEventListener('click', () => {
+            this.addLocalStorageListener(numberAC , element.querySelector('.custom-slider'));
+          });
+        }else if (btn.textContent === 'Annuler') {
+          btn.addEventListener('click', () => {
+            console.log('Secondary button clicked');
+          });
+      }  }
+      this.addLocalStorageListener(numberAC, element.querySelector('.custom-slider'));
       const slider = element.querySelector('.custom-slider');
       const circularProgress = element.querySelector('.circular-progress');
       const progressValue = element.querySelector('.progress-value');
       let statut = element.querySelector('.meta-status');
 
       if (slider && circularProgress && progressValue) {
-        // Initial value
         this.updateProgress(slider.value, circularProgress, slider, progressValue, statut);
         this.updateStatus(slider.value, statut);
-        // Listen to changes
         slider.addEventListener('input', (e) => {
           this.updateProgress(e.target.value, circularProgress, slider, progressValue, statut);
         });
