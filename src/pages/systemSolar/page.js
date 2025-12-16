@@ -1,18 +1,15 @@
 import { SolarSystemView } from "@/ui/solar-system";
 import { htmlToDOM } from "@/lib/utils.js";
 import template from "./template.html?raw";
-import gsap from "gsap";
-import { Draggable } from "gsap/draggable";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { setupPanZoom } from "./draggableCanvas.js";
 import { ModalView } from "@/ui/modal";
 import { Star } from "../../data/searchingStar.js";
 import { HeadeskillsSideBarView } from "@/ui/skillsSideBar";
 import { Animation } from "@/lib/animation.js";
 import { featuresView } from "../../ui/features/index.js";
+import { loadUserData, updateAcquisition } from '@/data/userData.js';
+import { pausePlayBtnView } from "@/ui/playPauseBtn/index.js";
 
-
-gsap.registerPlugin(MotionPathPlugin, Draggable);
 
 
 let C = {};
@@ -61,155 +58,64 @@ C.updateButtonIcon = function() {
 
 C.handler_clickStar = async function(event) {
     let starData = await Star.getStarDataById(event.currentTarget.dataset.acs);
+    const acId = starData.id;
 
-    const star = event.currentTarget;
-    console.log("Clicked star element:", event.currentTarget);
-    const starId = star.id;
-    console.log("Star clicked:", starId);
     const modal = new ModalView();
     let mainContainer = document.querySelector('#mainContainer');
-
     let svgContainer = mainContainer.querySelector('#svgContainer');
     
     if (mainContainer.querySelector('.card')) {
-            mainContainer.querySelector('.card').remove();
-            mainContainer.insertBefore(modal.dom(starData), svgContainer);
-    }else {
-            mainContainer.insertBefore(modal.dom(starData), svgContainer);
+        mainContainer.querySelector('.card').remove();
     }
+    console.log("modal",modal.dom(starData));
+    mainContainer.insertBefore(modal.dom(starData), svgContainer);
     
     const cardElement = mainContainer.querySelector('.card');
+
+    // --- Début des corrections ---
+
+    // Fonction locale pour mettre à jour le modal
+    const setProgress = (percentage) => {
+        const progressSlider = cardElement.querySelector('.custom-slider');
+        const progressValueText = cardElement.querySelector('.progress-value');
+        const circularProgress = cardElement.querySelector('.circular-progress');
+
+        if (!progressSlider || !progressValueText || !circularProgress) {
+            console.error("Un des éléments de progression du modal est introuvable.");
+            return;
+        }
+
+        const clampedPercentage = Math.max(0, Math.min(100, percentage));
+
+        progressSlider.value = clampedPercentage;
+        progressValueText.textContent = `${clampedPercentage}%`;
+        circularProgress.style.setProperty('--percent', clampedPercentage);
+    };
+
+    // Chargement des données utilisateur et mise à jour de l'UI
+    const userData = loadUserData();
+    const currentAcquisition = userData.acquisitions[acId];
+    if (currentAcquisition) {
+        setProgress(currentAcquisition.percentage);
+    } else {
+        setProgress(0);
+    }
+
     if (cardElement && starData && starData.color) {
         cardElement.style.setProperty('--primary-color', starData.color);
-        console.log("Couleur appliquée:", starData.color);
     }
     
-    // updateMetricsProgress();
-
-}
-
-C.handler_hoverOutStar = function(event) {
-    const star = event.currentTarget;
-        star.style.transform = 'scale(1)';
-}
-
-C.handler_hoverStar = function(event) {
-
-        const star = event.currentTarget;
-        star.style.transform = 'scale(1.2)';
-
-}
-
-
-
-
-// a mettre dans animation ??? fixe ce bug
-C.rotateStars = function(planets) {
-    planets.forEach(systemSkill => {
-        let systemSkillLevels = systemSkill.querySelectorAll('[id$="-level1"], [id$="-level2"], [id$="-level3"]');
-        systemSkillLevels.forEach( (level) => {
-            let planetLevels = level.querySelector('[id$="-activities"]');
-            let pathAcOrbit = level.querySelector('[id$="-center-orbit"]');
-
-            let stars = planetLevels.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"], [id$="-ac4"], [id$="-ac5"], [id$="-ac6"], [id$="-ac7"]');
-
-
-            //IA 
-            // Génère des offsets espacés avec une petite part aléatoire et une distance minimale
-            const makeOffsets = (count, minGap = 0.05) => {
-                const baseGap = 1 / count;
-                const jitter = Math.max(0, (baseGap - minGap) / 2);
-                let arr = Array.from({ length: count }, (_, i) => {
-                    const noise = (Math.random() * 2 - 1) * jitter;
-                    const v = i * baseGap + noise;
-                    return ((v % 1) + 1) % 1; // wrap 0-1
-                }).sort((a, b) => a - b);
-                return arr;
-            };
-
-            const offsets = makeOffsets(stars.length, 0.06);
-            const phase = Math.random();
-
-            stars.forEach((star, index) => {
-                const start = (offsets[index] + phase) % 1;
-                const anim = gsap.to(star, {
-                    duration: 30,
-                    repeat: -1,
-                    ease: "linear",
-                    motionPath: {
-                        path: pathAcOrbit,
-                        align: pathAcOrbit,
-                        alignOrigin: [0.5, 0.5],
-                        start,
-                        end: start + 1
-                    }
-                });
-                // Stocke l'animation pour la pause/play
-                animationState.animations.push(anim);
-            });
-        } );
-    });
-}
-
-
-
-
-
-C.rotateLevels = function(planets) {
-
-    planets.forEach(systemSkill => {
-        let systemSkillLevels = systemSkill.querySelectorAll('[id$="level1-activities"], [id$="level2-activities"], [id$="level3-activities"]');
+    // Écouteur d'événement pour le bouton de sauvegarde
+    const saveButton = cardElement.querySelector('.actions .btn-primary');
+    saveButton.addEventListener('click', () => {
+        const progressSlider = cardElement.querySelector('.custom-slider');
+        const newPercentage = parseInt(progressSlider.value, 10);
+        updateAcquisition(acId, newPercentage);
         
-        for (let i = 0; i < systemSkillLevels.length; i++) {
-            let orbitLevel = systemSkill.querySelectorAll('[id$="level1-orbit"], [id$="level2-orbit"], [id$="level3-orbit"]');
-            orbitLevel = orbitLevel[i];
-            let offsetRandom = Math.random();
-            const anim = gsap.to(systemSkillLevels[i], {
-                duration: 60,
-                repeat: -1,
-                ease: "linear",
-                motionPath: {
-                    path: orbitLevel,
-                    align: orbitLevel,
-                    alignOrigin: [0.5, 0.5],
-                    start: offsetRandom,
-                    end: offsetRandom + 1
-                }
-            });
-            // Stocke l'animation
-            animationState.animations.push(anim);
-        }
+        cardElement.remove(); 
     });
 
-}
-
-
-
-C.rotateSolarSystem = function() {
-    let systemSolar = V.solarSystem.getMainPath();
-
-    let planets = V.solarSystem.getElements();
-    
-    planets.forEach( (planet, index) => {
-        let offset = (1 / planets.length) * index;
-        const anim = gsap.to(planet, { 
-            duration: 100, 
-            repeat: -1,
-            ease: "linear",
-            motionPath: { 
-                path: systemSolar, 
-                align: systemSolar, 
-                alignOrigin: [0.5, 0.5],
-                start: offset,
-                end: offset + 1
-            } 
-        });
-        // Stocke l'animation
-        animationState.animations.push(anim);
-        C.rotateLevels(planets);
-        
-    } );
-    C.rotateStars(planets);
+    // --- Fin des corrections ---
 }
         
 
@@ -226,7 +132,7 @@ V.init = function() {
   V.rootPage.querySelector('slot[name="svg"]').replaceWith( V.solarSystem.dom() );
   V.rootPage.appendChild( new HeadeskillsSideBarView().dom() );
     V.rootPage.appendChild( new featuresView().dom() );
-//   Animation.draggable('#container-skills', V.rootPage);
+    V.rootPage.appendChild( new pausePlayBtnView().dom() );
   V.attachEvents(V.rootPage, V.solarSystem);
   return V.rootPage;
 };
@@ -235,31 +141,14 @@ V.init = function() {
 
 V.attachEvents = function(rootPage, solarSystem) {
     
-    C.rotateSolarSystem();
+    Animation.rotateSolarSystem(solarSystem, animationState);
 
     // Setup pause/play button
     const pausePlayBtn = rootPage.querySelector('#pausePlayBtn');
-    console.log("Pause/Play button:", pausePlayBtn);
-    // pausePlayBtn.addEventListener('click', C.togglePausePlay);
-    if (pausePlayBtn) {
-        pausePlayBtn.addEventListener('click', C.togglePausePlay);
-        
-        // Hover effect on button
-        pausePlayBtn.addEventListener('mouseenter', function() {
-            this.style.background = 'rgba(255, 255, 255, 0.2)';
-            this.style.borderColor = 'rgba(255, 255, 255, 0.5)';
-        });
-        pausePlayBtn.addEventListener('mouseleave', function() {
-            this.style.background = 'rgba(255, 255, 255, 0.1)';
-            this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-        });
-    } else {
-        console.warn('Pause/Play button not found');
-    }
+    pausePlayBtn.addEventListener('click', C.togglePausePlay);
 
-    let starsAC = rootPage.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"], [id$="-ac4"], [id$="-ac5"], [id$="-ac6"], [id$="-ac7"]');
     solarSystem.addAllStarsClickListener(C.handler_clickStar);
-
+    
 
 
     // starsAC.forEach(star => {

@@ -9,6 +9,10 @@
 @import "./ui/solar-system/style.css";
 @import "./ui/skillsSideBar/style.css";
 @import "./ui/features/style.css";
+@import "./ui/playPauseBtn/style.css";
+
+/*import css de page*/
+@import "./pages/systemSolar/style.css";
 
 :root {
   /* Primitives Tokens */

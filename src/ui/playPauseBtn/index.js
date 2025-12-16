@@ -4,7 +4,7 @@ import template from "./template.html?raw";
 // HeaderView est un composant statique
 // on ne fait que charger le template HTML
 // en donnant la possibilité de l'avoir sous forme html ou bien de dom
-class HeadeskillsSideBarView {
+class pausePlayBtnView {
   constructor() {
     this.root = htmlToDOM(template);
   } 
@@ -18,4 +18,4 @@ class HeadeskillsSideBarView {
 
 };
 
-export { HeadeskillsSideBarView };
+export { pausePlayBtnView };

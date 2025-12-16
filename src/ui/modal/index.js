@@ -49,39 +49,40 @@ class ModalView {
     }
   }
 
-  addLocalStorageListener(key, element) {
-    let storedValue = localStorage.getItem(key);
-    if (storedValue !== null) {
-      element.value = storedValue;
-      this.updateProgress(storedValue, this.root.querySelector('.circular-progress'), element, this.root.querySelector('.progress-value'), this.root.querySelector('.meta-status'));
-    }
-    element.addEventListener('input', (e) => {
-      localStorage.setItem(key, e.target.value);
-    });
-  }
+  // addLocalStorageListener(key, element) {
+  //   let storedValue = localStorage.getItem(key);
+  //   if (storedValue !== null) {
+  //     element.value = storedValue;
+  //     this.updateProgress(storedValue, this.root.querySelector('.circular-progress'), element, this.root.querySelector('.progress-value'), this.root.querySelector('.meta-status'));
+  //   }
+  //   element.addEventListener('input', (e) => {
+  //     localStorage.setItem(key, e.target.value);
+  //   });
+  // }
 
-    html(data) {
-      return genericRenderer(template, data);
-    }
+  //   html(data) {
+  //     return genericRenderer(template, data);
+  //   }
 
     dom(data) {
       const element = htmlToDOM(genericRenderer(template, data));
       let numberAC = element.querySelector('.title').textContent;
       let buttons = element.querySelectorAll('.btn');
       console.log(buttons);
-      for (let btn of buttons) {
-        console.log('c ici que ça bug');
+      // for (let btn of buttons) {
+      //   console.log('c ici que ça bug');
         
-        if (btn.textContent.includes('Sauvegarder')) {
-          btn.addEventListener('click', () => {
-            this.addLocalStorageListener(numberAC , element.querySelector('.custom-slider'));
-          });
-        }else if (btn.textContent === 'Annuler') {
-          btn.addEventListener('click', () => {
-            console.log('Secondary button clicked');
-          });
-      }  }
-      this.addLocalStorageListener(numberAC, element.querySelector('.custom-slider'));
+      //   if (btn.textContent.includes('Sauvegarder')) {
+      //     btn.addEventListener('click', () => {
+      //       this.addLocalStorageListener(numberAC , element.querySelector('.custom-slider'));
+      //     });
+      //   }else if (btn.textContent === 'Annuler') {
+      //     btn.addEventListener('click', () => {
+      //       console.log('Secondary button clicked');
+      //     });
+      // }  
+      // }
+      // this.addLocalStorageListener(numberAC, element.querySelector('.custom-slider'));
       const slider = element.querySelector('.custom-slider');
       const circularProgress = element.querySelector('.circular-progress');
       const progressValue = element.querySelector('.progress-value');
@@ -114,6 +115,19 @@ class ModalView {
 
       return overlay;
     }
+
+    // setProgress(percentage) {
+    //   console.log("Setting progress to:", this.root);
+    //   const progressValue = this.domNode.querySelector('.progress-value');
+      
+    //   const progressSlider = this.domNode.querySelector('.custom-slider');
+    //   console.log("Setting progress to:", progressSlider);
+
+    //   const clampedPercentage = Math.max(0, Math.min(100, percentage));
+
+    //   progressSlider.value = clampedPercentage;
+    //   progressValue.textContent = `${clampedPercentage}%`;
+    
 }
 
 export { ModalView };

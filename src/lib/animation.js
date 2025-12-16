@@ -1,7 +1,8 @@
 import { gsap } from "gsap";
 import DrawSVGPlugin from "gsap/DrawSVGPlugin";
 import { Draggable } from "gsap/draggable";
-gsap.registerPlugin(DrawSVGPlugin, Draggable);
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+gsap.registerPlugin(DrawSVGPlugin, Draggable, MotionPathPlugin);
 
 let Animation = {};
 
@@ -84,6 +85,99 @@ Animation.bounce = function (element, duration = 1, height = 100) {
   });
 };
 
+Animation.rotateStars = function(planets, animationState) {
+    planets.forEach(systemSkill => {
+        let systemSkillLevels = systemSkill.querySelectorAll('[id$="-level1"], [id$="-level2"], [id$="-level3"]');
+        systemSkillLevels.forEach( (level) => {
+            let planetLevels = level.querySelector('[id$="-activities"]');
+            let pathAcOrbit = level.querySelector('[id$="-center-orbit"]');
+
+            let stars = planetLevels.querySelectorAll('[id$="-ac1"], [id$="-ac2"], [id$="-ac3"], [id$="-ac4"], [id$="-ac5"], [id$="-ac6"], [id$="-ac7"]');
+
+            const makeOffsets = (count, minGap = 0.05) => {
+                const baseGap = 1 / count;
+                const jitter = Math.max(0, (baseGap - minGap) / 2);
+                let arr = Array.from({ length: count }, (_, i) => {
+                    const noise = (Math.random() * 2 - 1) * jitter;
+                    const v = i * baseGap + noise;
+                    return ((v % 1) + 1) % 1;
+                }).sort((a, b) => a - b);
+                return arr;
+            };
+
+            const offsets = makeOffsets(stars.length, 0.06);
+            const phase = Math.random();
+
+            stars.forEach((star, index) => {
+                const start = (offsets[index] + phase) % 1;
+                const anim = gsap.to(star, {
+                    duration: 30,
+                    repeat: -1,
+                    ease: "linear",
+                    motionPath: {
+                        path: pathAcOrbit,
+                        align: pathAcOrbit,
+                        alignOrigin: [0.5, 0.5],
+                        start,
+                        end: start + 1
+                    }
+                });
+                animationState.animations.push(anim);
+            });
+        } );
+    });
+}
+
+Animation.rotateLevels = function(planets, animationState) {
+    planets.forEach(systemSkill => {
+        let systemSkillLevels = systemSkill.querySelectorAll('[id$="level1-activities"], [id$="level2-activities"], [id$="level3-activities"]');
+        
+        for (let i = 0; i < systemSkillLevels.length; i++) {
+            let orbitLevel = systemSkill.querySelectorAll('[id$="level1-orbit"], [id$="level2-orbit"], [id$="level3-orbit"]');
+            orbitLevel = orbitLevel[i];
+            let offsetRandom = Math.random();
+            const anim = gsap.to(systemSkillLevels[i], {
+                duration: 60,
+                repeat: -1,
+                ease: "linear",
+                motionPath: {
+                    path: orbitLevel,
+                    align: orbitLevel,
+                    alignOrigin: [0.5, 0.5],
+                    start: offsetRandom,
+                    end: offsetRandom + 1
+                }
+            });
+            animationState.animations.push(anim);
+        }
+    });
+}
+
+Animation.rotateSolarSystem = function(solarSystem, animationState) {
+    let systemSolar = solarSystem.getMainPath();
+    let planets = solarSystem.getElements();
+    
+    planets.forEach( (planet, index) => {
+        let offset = (1 / planets.length) * index;
+        const anim = gsap.to(planet, { 
+            duration: 100, 
+            repeat: -1,
+            ease: "linear",
+            motionPath: { 
+                path: systemSolar, 
+                align: systemSolar, 
+                alignOrigin: [0.5, 0.5],
+                start: offset,
+                end: offset + 1
+            } 
+        });
+        animationState.animations.push(anim);
+    } );
+    
+    Animation.rotateLevels(planets, animationState);
+    Animation.rotateStars(planets, animationState);
+}
+
 // Animation.draggable = function (element, bounds) {
 //   console.log("Making element draggable:", element, "with bounds:", bounds);
 //     Draggable.create(element, {
@@ -98,6 +192,9 @@ Animation.bounce = function (element, duration = 1, height = 100) {
 //     }
 //   });
 // };
+
+
+
 
 
 export { Animation };
