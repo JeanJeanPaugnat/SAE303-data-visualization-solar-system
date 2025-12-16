@@ -178,6 +178,56 @@ Animation.rotateSolarSystem = function(solarSystem, animationState) {
     Animation.rotateStars(planets, animationState);
 }
 
+
+Animation.animusReveal = function(element, duration = 0.8) {
+  const timeline = gsap.timeline();
+
+  // 1. L'élément s'ouvre verticalement comme une projection
+  timeline.fromTo(element, 
+    {
+      clipPath: "polygon(0 50%, 100% 50%, 100% 50%, 0 50%)",
+      opacity: 0,
+      scale: 0.95,
+      filter: "blur(10px) brightness(1.5)" // Commence flou et très lumineux
+    },
+    {
+      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", // S'ouvre complètement
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px) brightness(1)",
+      duration: duration,
+      ease: "power3.out" // Effet rapide au début, lent à la fin
+    }
+  );
+
+  // 2. Petit effet de "rebond" lumineux sur la bordure après l'ouverture
+  timeline.fromTo(element,
+    { boxShadow: "0 0 0px rgba(0, 212, 255, 0)" },
+    { 
+      boxShadow: "0 0 30px rgba(0, 212, 255, 0.3)", 
+      duration: 0.3, 
+      yoyo: true, 
+      repeat: 1,
+      ease: "sine.inOut"
+    },
+    "-=0.2" // Commence légèrement avant la fin de l'animation précédente
+  );
+};
+
+Animation.animusHide = function(element, duration = 0.5, onComplete) {
+  const timeline = gsap.timeline({ onComplete });
+
+  // Animation pour cacher l'élément, inverse de animusReveal
+  timeline.to(element, {
+    clipPath: "polygon(0 50%, 100% 50%, 100% 50%, 0 50%)",
+    opacity: 0,
+    scale: 0.95,
+    filter: "blur(10px) brightness(1.5)",
+    duration: duration,
+    ease: "power3.in"
+  });
+};
+
 // Animation.draggable = function (element, bounds) {
 //   console.log("Making element draggable:", element, "with bounds:", bounds);
 //     Draggable.create(element, {

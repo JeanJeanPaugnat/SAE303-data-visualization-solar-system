@@ -3,7 +3,7 @@
     --bg-card: #030b13; /* Très sombre, presque noir */
     --primary-color: #00D0FF;
     /* less saturation: color-mix(in srgb, var(--primary-color) 80%, gray 20%); */
-    --darkened-primary: calc(var(--primary-color) * 0.8);
+    --darkened-primary: rgba(0, 212, 255, 0.1);
     --text-white: #ffffff;
     --text-muted: #a0aab8;
     --border-color: #1a2736;
@@ -84,7 +84,7 @@
 }
 
 /* --- Titre et Description --- */
-.title {
+.cardTitle {
     font-family: var(--font-mono);
     color: var(--color-onweb);
     font-size: 2.5rem;
@@ -290,6 +290,7 @@ textarea::placeholder {
 
 /* --- Section Historique --- */
 .history-section {
+    display: none; /* Masqué par défaut */
     margin-bottom: 30px;
     background: rgba(7, 18, 29, 0.4); /* Fond très subtil */
     border-radius: 12px;
@@ -377,4 +378,33 @@ textarea::placeholder {
 }
 .history-trend.negative svg {
     transform: rotate(180deg); /* Flèche vers le bas */
+}
+
+/* --- Ajouts pour Animations --- */
+
+/* L'état initial de la carte avant l'animation d'ouverture */
+.card {
+    /* On prépare le clip-path pour l'effet d'ouverture "Animus" */
+    clip-path: polygon(0 50%, 100% 50%, 100% 50%, 0 50%);
+    opacity: 0;
+}
+
+/* État de succès pour le bouton */
+.btn-primary.success {
+    background-color: #00ff9d !important; /* Vert néon intense */
+    color: #050e18 !important; /* Texte foncé pour le contraste */
+    box-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
+    border-color: transparent;
+}
+
+/* Petite classe utilitaire pour les effets de flash */
+.flash-effect {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 101;
+    mix-blend-mode: overlay;
+    border-radius: 20px;
 }

@@ -10,6 +10,7 @@ import { featuresView } from "../../ui/features/index.js";
 import { loadUserData, updateAcquisition } from '@/data/userData.js';
 import { pausePlayBtnView } from "@/ui/playPauseBtn/index.js";
 import { hoverTextView } from "@/ui/hoverText/index.js";
+import { HistoriqueItemView } from "@/ui/historiqueItem/index.js";
 
 
 
@@ -113,11 +114,28 @@ C.handler_clickStar = async function(event) {
 
     // Créer et ajouter newmodal
     const modalElement = modal.dom(starData);
-    console.log(modalElement);
     document.body.appendChild(modalElement);
     
-    // Charger les données utilisateur et mettre à jour l'UI
+    // Charger les données utilisateur
     const userData = loadUserData();
+
+    // Gérer l'affichage de l'historique
+    const historyForAc = userData.history.filter(item => item.ac === acId);
+    const historySection = modalElement.querySelector('.history-section');
+
+    if (historyForAc.length > 0) {
+        historySection.style.display = 'block';
+        const historyList = historySection.querySelector('.history-list');
+        historyList.innerHTML = ''; // Clear previous items
+        historyForAc.forEach(historyItemData => {
+            const historiqueItem = new HistoriqueItemView();
+            console.log(historyItemData);
+            historyList.appendChild(historiqueItem.dom(historyItemData));
+        });
+    } else {
+        historySection.style.display = 'none';
+    }
+    
     const currentAcquisition = userData.acquisitions[acId];
     const percentage = currentAcquisition ? currentAcquisition.percentage : 0;
     modal.setProgress(percentage);
