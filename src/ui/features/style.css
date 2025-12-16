@@ -1,15 +1,14 @@
 /* Conteneur pour aligner les boutons horizontalement */
 .actions-container {
     position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 0px;
+    right: 0px;
     z-index: 52;
     display: flex;
     gap: 20px; /* Espace entre les boutons */
     justify-content: center;
 
-    padding: 15px 25px;
+    padding: 2rem;
 
 }
 

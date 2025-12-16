@@ -1,7 +1,8 @@
 #pausePlayBtn {
         position: absolute;
-        top: 20px;
-        right: 20px;
+        top: 0px;
+        right: 0px;
+        margin: 2rem;
         z-index: 53;
         background: rgba(255, 255, 255, 0.1);
         border: 2px solid rgba(255, 255, 255, 0.3);

@@ -40,7 +40,7 @@
     padding: 30px;
     /* margin: 1.2rem; /* Margin n'est plus nécessaire pour le centrage */
     /* Arrondi spécial en bas à droite comme sur l'image */
-    border-radius: 20px 20px 60px 20px;
+    border-radius: 20px 20px 20px 20px;
     border: 1px solid #112233;
     box-shadow: 0 10px 30px rgba(0, 212, 255, 0.05);
 }

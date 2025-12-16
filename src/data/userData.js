@@ -22,8 +22,10 @@ export const loadUserData = () => {
   } catch (error) {
     console.error("Failed to load or parse user data from localStorage:", error);
   }
+  console.log('je load la data ici',defaultUserData)
   // Return a copy of the default object to avoid mutation of the original
   return { ...defaultUserData, acquisitions: {}, history: [] };
+
 };
 
 /**
@@ -32,6 +34,7 @@ export const loadUserData = () => {
  */
 export const saveUserData = (userData) => {
   try {
+    console.log('je save une data la data ici', userData,defaultUserData)
     localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
   } catch (error) {
     console.error("Failed to save user data to localStorage:", error);

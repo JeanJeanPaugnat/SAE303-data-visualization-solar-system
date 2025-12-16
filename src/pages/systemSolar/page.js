@@ -9,6 +9,7 @@ import { Animation } from "@/lib/animation.js";
 import { featuresView } from "../../ui/features/index.js";
 import { loadUserData, updateAcquisition } from '@/data/userData.js';
 import { pausePlayBtnView } from "@/ui/playPauseBtn/index.js";
+import { hoverTextView } from "@/ui/hoverText/index.js";
 
 
 
@@ -18,6 +19,8 @@ let animationState = {
     isPlaying: true,
     animations: [] // Stocke les animations motionPath
 };
+
+let tooltipInstance = null; // Garder une seule instance du tooltip
 
 C.init = function() {
   return V.init();
@@ -38,8 +41,48 @@ C.togglePausePlay = function() {
     C.updateButtonIcon();
 }
 
-C.hoverOnStar = function(star) {
-    star.style.transform = 'scale(1.2)';
+C.hoverOnStar = async function(event) {
+    const starElement = event.currentTarget;
+
+    let starData = await Star.getStarDataById(starElement.dataset.acs);
+    
+    const userData = loadUserData();
+    const acquisition = userData.acquisitions[starData.code];
+    const percentage = acquisition ? acquisition.percentage : 0;
+    console.log(percentage);
+    const tooltipContainer = document.getElementById('tooltip-container');
+    
+    if (!tooltipInstance) {
+        tooltipInstance = new hoverTextView();
+        tooltipContainer.appendChild(tooltipInstance.dom(starData.code, `${percentage}%`));
+    } else {
+        // Mettre à jour le contenu existant
+        let codeACText = tooltipContainer.querySelector(".codeACText");
+        let percentageAcquisition = tooltipContainer.querySelector(".percentageAcquisition");
+        if(codeACText) codeACText.textContent = starData.code;
+        if(percentageAcquisition) percentageAcquisition.textContent = `${percentage}%`;
+    }
+    
+    tooltipContainer.style.display = 'block';
+
+    const updateTooltipPosition = (e) => {
+        tooltipContainer.style.left = `${e.clientX + 10}px`;
+        tooltipContainer.style.top = `${e.clientY + 10}px`;
+    };
+
+    // Use a named function to be able to remove it later
+    starElement._updateTooltipPosition = updateTooltipPosition;
+    document.addEventListener('mousemove', starElement._updateTooltipPosition);
+}
+
+C.hoverOutStar = function(event) {
+    const starElement = event.currentTarget;
+    const tooltipContainer = document.getElementById('tooltip-container');
+    tooltipContainer.style.display = 'none';
+
+    if (starElement._updateTooltipPosition) {
+        document.removeEventListener('mousemove', starElement._updateTooltipPosition);
+    }
 }
 
 C.updateButtonIcon = function() {
@@ -58,7 +101,8 @@ C.updateButtonIcon = function() {
 
 C.handler_clickStar = async function(event) {
     let starData = await Star.getStarDataById(event.currentTarget.dataset.acs);
-    const acId = starData.id;
+    const acId = starData.code;
+    console.log("Clicked star data:", acId);
 
     const modal = new ModalView();
     let mainContainer = document.querySelector('#mainContainer');
@@ -148,15 +192,7 @@ V.attachEvents = function(rootPage, solarSystem) {
     pausePlayBtn.addEventListener('click', C.togglePausePlay);
 
     solarSystem.addAllStarsClickListener(C.handler_clickStar);
-    
-
-
-    // starsAC.forEach(star => {
-    //     console.log("Adding hover listener to star:", star);
-    //     star.addEventListener('mouseenter', C.hoverOnStar(star));
-        
-    // });
-    // solarSystem.addAllStarsHoverListener(C.hoverOnStar, C.hoverOutStar);
+    solarSystem.addAllStarsHoverListener(C.hoverOnStar, C.hoverOutStar);
     
     setupPanZoom(rootPage, solarSystem);
 }

@@ -57,8 +57,7 @@ Star.getStarDataById = function(starId) {
     const competence = Star.starsData[competenceKey];
     const niveau = competence.niveaux.find(n => n.ordre === niveauNum);
     const ac = niveau.acs.find(a => a.code === acPart);
-
-
+    console.log( competence, niveau, ac);
     let color = "";
     switch (competence.numero) {
         case 1: color = "#FF0000"; break;
@@ -67,8 +66,6 @@ Star.getStarDataById = function(starId) {
         case 4: color = "#FB00FF"; break;
         case 5: color = "#77FF00"; break;
     }
-
-
     const starData = {
         code: ac.code,
         libelle: ac.libelle,

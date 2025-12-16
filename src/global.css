@@ -10,6 +10,7 @@
 @import "./ui/skillsSideBar/style.css";
 @import "./ui/features/style.css";
 @import "./ui/playPauseBtn/style.css";
+@import "./ui/hoverText/style.css";
 
 /*import css de page*/
 @import "./pages/systemSolar/style.css";
@@ -32,4 +33,14 @@
 
 body {
   margin : 0;
+}
+
+/*Reset */
+* {
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl, dd {
+  margin: 0;
+  padding: 0;
 }

@@ -1,3 +1,13 @@
 #mainContainer{
-    background-color: #1B1B1B; position: relative;
+    background-color: #1B1B1B; 
+    position: relative;
 }
+
+#tooltip-container {
+    position: absolute;
+    display: none;
+    pointer-events:none;
+    z-index: 1000;
+}
+
+
