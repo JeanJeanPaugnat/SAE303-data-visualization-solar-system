@@ -13,6 +13,7 @@ import { hoverTextView } from "@/ui/hoverText/index.js";
 
 
 
+
 let C = {};
 
 let animationState = {
@@ -56,7 +57,6 @@ C.hoverOnStar = async function(event) {
         tooltipInstance = new hoverTextView();
         tooltipContainer.appendChild(tooltipInstance.dom(starData.code, `${percentage}%`));
     } else {
-        // Mettre à jour le contenu existant
         let codeACText = tooltipContainer.querySelector(".codeACText");
         let percentageAcquisition = tooltipContainer.querySelector(".percentageAcquisition");
         if(codeACText) codeACText.textContent = starData.code;
@@ -70,7 +70,6 @@ C.hoverOnStar = async function(event) {
         tooltipContainer.style.top = `${e.clientY + 10}px`;
     };
 
-    // Use a named function to be able to remove it later
     starElement._updateTooltipPosition = updateTooltipPosition;
     document.addEventListener('mousemove', starElement._updateTooltipPosition);
 }
@@ -100,66 +99,43 @@ C.updateButtonIcon = function() {
 
 
 C.handler_clickStar = async function(event) {
-    let starData = await Star.getStarDataById(event.currentTarget.dataset.acs);
+    const starData = await Star.getStarDataById(event.currentTarget.dataset.acs);
     const acId = starData.code;
-    console.log("Clicked star data:", acId);
 
     const modal = new ModalView();
-    let mainContainer = document.querySelector('#mainContainer');
-    let svgContainer = mainContainer.querySelector('#svgContainer');
+    const mainContainer = document.querySelector('#mainContainer');
     
-    if (mainContainer.querySelector('.card')) {
-        mainContainer.querySelector('.card').remove();
+    // Supprime old modal si il existe
+    const existingModal = mainContainer.querySelector('.modal-overlay');
+    if (existingModal) {
+        existingModal.remove();
     }
-    console.log("modal",modal.dom(starData));
-    mainContainer.insertBefore(modal.dom(starData), svgContainer);
+
+    // Créer et ajouter newmodal
+    const modalElement = modal.dom(starData);
+    console.log(modalElement);
+    document.body.appendChild(modalElement);
     
-    const cardElement = mainContainer.querySelector('.card');
-
-    // --- Début des corrections ---
-
-    // Fonction locale pour mettre à jour le modal
-    const setProgress = (percentage) => {
-        const progressSlider = cardElement.querySelector('.custom-slider');
-        const progressValueText = cardElement.querySelector('.progress-value');
-        const circularProgress = cardElement.querySelector('.circular-progress');
-
-        if (!progressSlider || !progressValueText || !circularProgress) {
-            console.error("Un des éléments de progression du modal est introuvable.");
-            return;
-        }
-
-        const clampedPercentage = Math.max(0, Math.min(100, percentage));
-
-        progressSlider.value = clampedPercentage;
-        progressValueText.textContent = `${clampedPercentage}%`;
-        circularProgress.style.setProperty('--percent', clampedPercentage);
-    };
-
-    // Chargement des données utilisateur et mise à jour de l'UI
+    // Charger les données utilisateur et mettre à jour l'UI
     const userData = loadUserData();
     const currentAcquisition = userData.acquisitions[acId];
-    if (currentAcquisition) {
-        setProgress(currentAcquisition.percentage);
-    } else {
-        setProgress(0);
-    }
+    const percentage = currentAcquisition ? currentAcquisition.percentage : 0;
+    modal.setProgress(percentage);
 
-    if (cardElement && starData && starData.color) {
-        cardElement.style.setProperty('--primary-color', starData.color);
+    // Appliquer la couleur
+    if (modal.cardElement && starData.color) {
+        modal.cardElement.style.setProperty('--primary-color', starData.color);
     }
     
     // Écouteur d'événement pour le bouton de sauvegarde
-    const saveButton = cardElement.querySelector('.actions .btn-primary');
-    saveButton.addEventListener('click', () => {
-        const progressSlider = cardElement.querySelector('.custom-slider');
-        const newPercentage = parseInt(progressSlider.value, 10);
-        updateAcquisition(acId, newPercentage);
-        
-        cardElement.remove(); 
-    });
-
-    // --- Fin des corrections ---
+    const saveButton = modal.cardElement.querySelector('.actions .btn-primary');
+    if (saveButton) {
+        saveButton.addEventListener('click', () => {
+            const progressSlider = modal.cardElement.querySelector('.custom-slider');
+            const newPercentage = parseInt(progressSlider.value, 10);
+            updateAcquisition(acId, newPercentage);
+        });
+    }
 }
         
 

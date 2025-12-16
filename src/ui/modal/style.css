@@ -36,7 +36,7 @@
     flex-direction: column;
     background-color: var(--bg-dark);
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
     padding: 30px;
     /* margin: 1.2rem; /* Margin n'est plus nécessaire pour le centrage */
     /* Arrondi spécial en bas à droite comme sur l'image */
@@ -278,4 +278,103 @@ textarea::placeholder {
     color: #4a5b6c;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+
+/* --- Variables additionnelles pour l'historique --- */
+:root {
+    --trend-positive: #00ff9d; /* Vert néon */
+    --trend-negative: #ff3e3e; /* Rouge néon */
+    --trend-neutral: #64748b;  /* Gris */
+}
+
+/* --- Section Historique --- */
+.history-section {
+    margin-bottom: 30px;
+    background: rgba(7, 18, 29, 0.4); /* Fond très subtil */
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid rgba(26, 39, 54, 0.5);
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background-color: rgba(5, 14, 24, 0.6);
+    border-radius: 6px;
+    border-left: 2px solid var(--border-color);
+    transition: all 0.2s ease;
+}
+
+.history-item:hover {
+    background-color: rgba(0, 212, 255, 0.03);
+    border-left-color: var(--color-onweb);
+}
+
+/* Date */
+.history-date {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: -0.5px;
+}
+
+/* Groupe de données à droite */
+.history-data {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Ancien score */
+.history-score {
+    font-family: var(--font-mono);
+    color: var(--text-white);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Badge de tendance (+15%) */
+.history-trend {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    min-width: 50px;
+    justify-content: flex-end;
+}
+
+/* Couleurs de tendance */
+.history-trend.positive {
+    color: var(--trend-positive);
+    background: rgba(0, 255, 157, 0.05);
+}
+
+.history-trend.negative {
+    color: var(--trend-negative);
+    background: rgba(255, 62, 62, 0.05);
+}
+
+.history-trend.neutral {
+    color: var(--trend-neutral);
+}
+
+/* Animation SVG pour la flèche */
+.history-trend.positive svg {
+    transform: rotate(0deg); /* Flèche vers le haut */
+}
+.history-trend.negative svg {
+    transform: rotate(180deg); /* Flèche vers le bas */
 }

@@ -2,132 +2,83 @@ import { htmlToDOM, genericRenderer } from "@/lib/utils.js";
 import template from "./template.html?raw";
 
 
-class ModalView {
+export class ModalView {
+
 
   constructor() {
-    this.root = htmlToDOM(template);
-    this.setupSliderListener();
+    this.cardElement = null;
   }
 
-  setupSliderListener() {
-    const slider = this.root.querySelector('.custom-slider');
-    const circularProgress = this.root.querySelector('.circular-progress');
-    const progressValue = this.root.querySelector('.progress-value');
-    let statut = this.root.querySelector('.meta-status');
+  dom(starData) {
+    const element = htmlToDOM(genericRenderer(template, starData));
+    this.cardElement = element;
 
-    if (slider && circularProgress && progressValue) {
-      // Initial value
-      this.updateProgress(slider.value, circularProgress, slider, progressValue, statut);
-      this.updateStatus(slider.value, statut);
-      // Listen to changes
-      slider.addEventListener('input', (e) => {
-        this.updateProgress(e.target.value, circularProgress, slider, progressValue, statut);
-        this.updateStatus(e.target.value, statut);
+    const slider = this.cardElement.querySelector('.custom-slider');
+    if (slider) {
+        slider.addEventListener('input', (e) => {
+            this.setProgress(e.target.value);
+        });
+    }
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.appendChild(element);
+
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) {
+        overlay.remove();
+      }
+    });
+
+    const closeBtn = element.querySelector('.close-btn');
+    if(closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        overlay.remove();
       });
     }
+
+    return overlay;
   }
 
-  updateProgress(value, circularProgress, slider, progressValue, statut) {
-    // Update the CSS variable for the circular progress
-    circularProgress.style.setProperty('--percent', value);
-    slider.style.setProperty('--slider-percent', `${value}%`);
-    // Update the text display
-    progressValue.textContent = `${value}%`;
-    this.updateStatus(value, statut);
-
+  setHistorique(historique) {
+    if (!this.cardElement) {
+      console.error("L'élément du modal n'a pas été initialisé.");
+      return;
+    }
+    const historiqueList = this.cardElement.querySelector('.historique-list');
   }
 
-  updateStatus(value, statut) {
-    if (value < 33) {
+  setProgress(percentage) {
+    if (!this.cardElement) {
+      console.error("L'élément du modal n'a pas été initialisé.");
+      return;
+    }
+
+    const progressSlider = this.cardElement.querySelector('.custom-slider');
+    const progressValueText = this.cardElement.querySelector('.progress-value');
+    const circularProgress = this.cardElement.querySelector('.circular-progress');
+    const statut = this.cardElement.querySelector('.meta-status');
+
+    if (!progressSlider || !progressValueText || !circularProgress || !statut) {
+        console.error("Un des éléments de progression du modal est introuvable.");
+        return;
+    }
+
+    const clampedPercentage = Math.max(0, Math.min(100, percentage));
+
+    progressSlider.value = clampedPercentage;
+    progressValueText.textContent = `${clampedPercentage}%`;
+    circularProgress.style.setProperty('--percent', clampedPercentage);
+    progressSlider.style.setProperty('--slider-percent', `${clampedPercentage}%`);
+
+    if (clampedPercentage < 33) {
       statut.textContent = "STATUS: BEGINNER";
-    } else if (value < 66) {
+    } else if (clampedPercentage < 66) {
       statut.textContent = "STATUS: INTERMEDIATE";
-    } else if (value >= 100) {
+    } else if (clampedPercentage >= 100) {
       statut.textContent = "STATUS: FULLY ACQUIRED";
     } else {
       statut.textContent = "STATUS: ADVANCED";
     }
   }
-
-  // addLocalStorageListener(key, element) {
-  //   let storedValue = localStorage.getItem(key);
-  //   if (storedValue !== null) {
-  //     element.value = storedValue;
-  //     this.updateProgress(storedValue, this.root.querySelector('.circular-progress'), element, this.root.querySelector('.progress-value'), this.root.querySelector('.meta-status'));
-  //   }
-  //   element.addEventListener('input', (e) => {
-  //     localStorage.setItem(key, e.target.value);
-  //   });
-  // }
-
-  //   html(data) {
-  //     return genericRenderer(template, data);
-  //   }
-
-    dom(data) {
-      const element = htmlToDOM(genericRenderer(template, data));
-      let numberAC = element.querySelector('.title').textContent;
-      let buttons = element.querySelectorAll('.btn');
-      console.log(buttons);
-      // for (let btn of buttons) {
-      //   console.log('c ici que ça bug');
-        
-      //   if (btn.textContent.includes('Sauvegarder')) {
-      //     btn.addEventListener('click', () => {
-      //       this.addLocalStorageListener(numberAC , element.querySelector('.custom-slider'));
-      //     });
-      //   }else if (btn.textContent === 'Annuler') {
-      //     btn.addEventListener('click', () => {
-      //       console.log('Secondary button clicked');
-      //     });
-      // }  
-      // }
-      // this.addLocalStorageListener(numberAC, element.querySelector('.custom-slider'));
-      const slider = element.querySelector('.custom-slider');
-      const circularProgress = element.querySelector('.circular-progress');
-      const progressValue = element.querySelector('.progress-value');
-      let statut = element.querySelector('.meta-status');
-
-      if (slider && circularProgress && progressValue) {
-        this.updateProgress(slider.value, circularProgress, slider, progressValue, statut);
-        this.updateStatus(slider.value, statut);
-        slider.addEventListener('input', (e) => {
-          this.updateProgress(e.target.value, circularProgress, slider, progressValue, statut);
-        });
-      }
-
-      const overlay = document.createElement('div');
-      overlay.className = 'modal-overlay';
-      overlay.appendChild(element);
-
-      overlay.addEventListener('click', e => {
-        if (e.target === overlay) {
-          overlay.remove();
-        }
-      });
-
-      const closeBtn = element.querySelector('.close-btn');
-      if(closeBtn) {
-        closeBtn.addEventListener('click', () => {
-          overlay.remove();
-        });
-      }
-
-      return overlay;
-    }
-
-    // setProgress(percentage) {
-    //   console.log("Setting progress to:", this.root);
-    //   const progressValue = this.domNode.querySelector('.progress-value');
-      
-    //   const progressSlider = this.domNode.querySelector('.custom-slider');
-    //   console.log("Setting progress to:", progressSlider);
-
-    //   const clampedPercentage = Math.max(0, Math.min(100, percentage));
-
-    //   progressSlider.value = clampedPercentage;
-    //   progressValue.textContent = `${clampedPercentage}%`;
-    
 }
-
-export { ModalView };
