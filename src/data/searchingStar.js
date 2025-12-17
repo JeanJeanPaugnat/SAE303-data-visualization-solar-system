@@ -1,72 +1,85 @@
-//fonctions to load the json, search infos into the json to add to the stars
-
 let Star = {};
 
-let customKeys = {
-        1: "comprendre",
-        2: "concevoir",
-        3: "exprimer",
-        4: "developper",
-        5: "entreprendre"
-    };
+// let customKeys = {
+//         1: "comprendre",
+//         2: "concevoir",
+//         3: "exprimer",
+//         4: "developper",
+//         5: "entreprendre"
+//     };
 
 Star.loadStarsData = async function() {
     let response = await fetch('/src/data/butmmi.json');
     const originalData = await response.json();
-    const newData = {};
+    // const newData = {};
 
-    for (const key in originalData) {
-        if (Object.hasOwnProperty.call(originalData, key)) {
-            const competence = originalData[key];
-            const newKey = customKeys[competence.numero];
-            if (newKey) {
-                newData[newKey] = competence;
-            } else {
-                newData[key] = competence;
-            }
-        }
-    }
-    Star.starsData = newData;
-    console.log("Stars data loaded and transformed:", Star.starsData);
+    // for (const key in originalData) {
+    //     if (Object.hasOwnProperty.call(originalData, key)) {
+    //         const competence = originalData[key];
+    //         const newKey = customKeys[competence.numero];
+    //         if (newKey) {
+    //             newData[newKey] = competence;
+    //         } else {
+    //             newData[key] = competence;
+    //         }
+    //     }
+    // }
+    Star.starsData = originalData;
+    // console.log("Stars data loaded and transformed:", Star.starsData);
     
     return Star.starsData;
 }
 
 Star.starsData = await Star.loadStarsData();
 
+// Créer un tableau simple pour accès par indices (comme pn)
+Star.dataArray = [];
+for (let key in Star.starsData) {
+    Star.dataArray.push(Star.starsData[key]);
+}
+
+// Méthodes d'extraction simples (comme pn)
+Star.getLevels = function(accode) {
+    return parseInt(accode.charAt(2), 10);
+};
+
+Star.getSkillIndex = function(accode) {
+    return parseInt(accode.charAt(3), 10);
+};
+
+Star.getACIndex = function(accode) {
+    return parseInt(accode.charAt(6), 10);
+};
+
 Star.getStarDataById = function(starId) {
-    if (!Star.starsData) {
-        console.error("Stars data not loaded.");
-        return null;
-    }
-    console.log("Searching for star data with ID:", starId);
+    // console.log("starId:", starId);
 
+    let acCode = starId.split('-')[0];
+    // console.log("acCode:", acCode);
+    
+    let level = Star.getLevels(acCode);        
+    let skill = Star.getSkillIndex(acCode);    
+    let acIndex = Star.getACIndex(acCode);    
+    
+    // console.log("level:", level, "skill:", skill, "acIndex:", acIndex);
+    
+    let competence = Star.dataArray[skill - 1];           
+    let niveau = competence.niveaux[level - 1];           
+    let ac = niveau.acs[acIndex - 1];                     
+    
+    // console.log("competence:", competence.nom_court, "niveau:", niveau.ordre, "ac:", ac.code);
+    
 
-    const acPart = starId.split('-')[0]; // e.g., "AC12.03"
-    const match = acPart.match(/AC(\d)(\d)\.\d+/); // Extracts competence and niveau numbers
-
-    if (!match) {
-        console.error(`Invalid starId format: ${starId}`);
-        return null;
-    }
-
-    const competenceNum = parseInt(match[2], 10);
-    const niveauNum = parseInt(match[1], 10);
-
-    const competenceKey = customKeys[competenceNum];
-    const competence = Star.starsData[competenceKey];
-    const niveau = competence.niveaux.find(n => n.ordre === niveauNum);
-    const ac = niveau.acs.find(a => a.code === acPart);
-    console.log( competence, niveau, ac);
     let color = "";
-    switch (competence.numero) {
-        case 1: color = "#FF0000"; break;
-        case 2: color = "#FFEA00"; break;
-        case 3: color = "#00D0FF"; break;
-        case 4: color = "#FB00FF"; break;
-        case 5: color = "#77FF00"; break;
+    switch (skill) {
+        case 1: color = "#FF0000"; break;  // Comprendre
+        case 2: color = "#FFEA00"; break;  // Concevoir
+        case 3: color = "#00D0FF"; break;  // Exprimer
+        case 4: color = "#FB00FF"; break;  // Développer
+        case 5: color = "#77FF00"; break;  // Entreprendre
     }
-    const starData = {
+
+    let starData = {
         code: ac.code,
         libelle: ac.libelle,
         niveau: niveau.ordre,
@@ -74,7 +87,7 @@ Star.getStarDataById = function(starId) {
         color: color
     };
     
-    console.log("Found star data:", starData);
+    console.log("starData:", starData);
     return starData;
 }
 

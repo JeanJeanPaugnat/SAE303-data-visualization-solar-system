@@ -7,7 +7,7 @@ import { Star } from "../../data/searchingStar.js";
 import { HeadeskillsSideBarView } from "@/ui/skillsSideBar";
 import { Animation } from "@/lib/animation.js";
 import { featuresView } from "../../ui/features/index.js";
-import { loadUserData, updateAcquisition } from '@/data/userData.js';
+import { UserData } from '@/data/userData.js';
 import { pausePlayBtnView } from "@/ui/playPauseBtn/index.js";
 import { hoverTextView } from "@/ui/hoverText/index.js";
 import { HistoriqueItemView } from "@/ui/historiqueItem/index.js";
@@ -48,7 +48,7 @@ C.hoverOnStar = async function(event) {
 
     let starData = await Star.getStarDataById(starElement.dataset.acs);
     
-    const userData = loadUserData();
+    const userData = UserData.load();
     const acquisition = userData.acquisitions[starData.code];
     const percentage = acquisition ? acquisition.percentage : 0;
     console.log(percentage);
@@ -117,7 +117,7 @@ C.handler_clickStar = async function(event) {
     document.body.appendChild(modalElement);
     
     // Charger les données utilisateur
-    const userData = loadUserData();
+    const userData = UserData.load();
 
     // Gérer l'affichage de l'historique
     const historyForAc = userData.history.filter(item => item.ac === acId);
@@ -151,24 +151,84 @@ C.handler_clickStar = async function(event) {
         saveButton.addEventListener('click', () => {
             const progressSlider = modal.cardElement.querySelector('.custom-slider');
             const newPercentage = parseInt(progressSlider.value, 10);
-            updateAcquisition(acId, newPercentage);
+            UserData.updateAcquisition(acId, newPercentage);
         });
     }
 }
+
+C.resetLocalStorage = function() {
+    localStorage.clear();
+    console.log("Local storage cleared.");
+    window.location.reload();
+}
+
+C.clickExportData = function() {
+    UserData.export();
+}
+
+C.importData = function() {
+    const inputElement = document.createElement('input');
+    inputElement.type = 'file';
+    inputElement.accept = '.json,application/json';
+    
+    inputElement.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            console.log('Aucun fichier sélectionné');
+            return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = (e) => {
+            try {
+                const fileContent = e.target.result;
+                UserData.import(fileContent);
+                console.log('Données importées avec succès');
+                // Recharger la page pour afficher les nouvelles données
+                window.location.reload();
+            } catch (error) {
+                console.error('Erreur lors de l\'import:', error);
+                alert('Erreur lors de l\'import du fichier. Vérifiez le format JSON.');
+            }
+        };
+        
+        reader.onerror = () => {
+            console.error('Erreur lors de la lecture du fichier');
+            alert('Erreur lors de la lecture du fichier');
+        };
+        
+        reader.readAsText(file);
+    });
+    
+    inputElement.click();
+}
+
+
         
 
 let V = {
   rootPage: null,
-  solarSystem: null
+  solarSystem: null,
+  dataAcCompetence: {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0
+  }
 };
 
 V.init = function() {
   Star.loadStarsData();
+    const userData = UserData.load();
   V.rootPage = htmlToDOM(template);
   V.solarSystem = new SolarSystemView();
 
   V.rootPage.querySelector('slot[name="svg"]').replaceWith( V.solarSystem.dom() );
-  V.rootPage.appendChild( new HeadeskillsSideBarView().dom() );
+  // Le composant HeadeskillsSideBarView va compter les ACs depuis rootPage dans sa méthode dom()
+  V.rootPage.appendChild( new HeadeskillsSideBarView().dom(userData, V.rootPage) );
+            
     V.rootPage.appendChild( new featuresView().dom() );
     V.rootPage.appendChild( new pausePlayBtnView().dom() );
   V.attachEvents(V.rootPage, V.solarSystem);
@@ -180,11 +240,15 @@ V.init = function() {
 V.attachEvents = function(rootPage, solarSystem) {
     
     Animation.rotateSolarSystem(solarSystem, animationState);
-
+    let resetStorageBtn = rootPage.querySelector('#resetStorageBtn');
+    resetStorageBtn.addEventListener('click', C.resetLocalStorage);
     // Setup pause/play button
     const pausePlayBtn = rootPage.querySelector('#pausePlayBtn');
     pausePlayBtn.addEventListener('click', C.togglePausePlay);
-
+    let btnExportData = rootPage.querySelector('#exportDataBtn');
+    btnExportData.addEventListener('click', C.clickExportData);
+    let btnImportData = rootPage.querySelector('#importDataBtn');
+    btnImportData.addEventListener('click', C.importData);
     solarSystem.addAllStarsClickListener(C.handler_clickStar);
     solarSystem.addAllStarsHoverListener(C.hoverOnStar, C.hoverOutStar);
     
