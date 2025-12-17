@@ -157,7 +157,7 @@ C.handler_clickStar = async function(event) {
 }
 
 C.resetLocalStorage = function() {
-    localStorage.clear();
+    localStorage.removeItem('studentData');
     console.log("Local storage cleared.");
     window.location.reload();
 }
@@ -220,14 +220,13 @@ let V = {
 };
 
 V.init = function() {
-  Star.loadStarsData();
-    const userData = UserData.load();
+//   Star.loadStarsData();
+//     const userData = UserData.load();
   V.rootPage = htmlToDOM(template);
   V.solarSystem = new SolarSystemView();
 
   V.rootPage.querySelector('slot[name="svg"]').replaceWith( V.solarSystem.dom() );
-  // Le composant HeadeskillsSideBarView va compter les ACs depuis rootPage dans sa méthode dom()
-  V.rootPage.appendChild( new HeadeskillsSideBarView().dom(userData, V.rootPage) );
+  V.rootPage.appendChild( new HeadeskillsSideBarView().dom(V.rootPage) );
             
     V.rootPage.appendChild( new featuresView().dom() );
     V.rootPage.appendChild( new pausePlayBtnView().dom() );

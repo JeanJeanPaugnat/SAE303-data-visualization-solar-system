@@ -3,7 +3,7 @@ import template from "./template.html?raw";
 import { gsap } from "gsap";
 import { Animation } from "@/lib/animation.js";
 
-export class ModalView {
+class ModalView {
 
   constructor() {
     this.cardElement = null;
@@ -167,3 +167,5 @@ export class ModalView {
     }
   }
 }
+
+export { ModalView };

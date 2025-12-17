@@ -20,13 +20,11 @@ class HistoriqueItemView {
     const evolution = element.querySelector('.history-trend');
 
     if (data) {
-        // Format date to be more readable, e.g., "14 OCT 2024"
         const dateObj = new Date(data.date);
         date.textContent = dateObj.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
         
         score.textContent = `${data.percentage}%`;
         
-        // Hide evolution for now
         evolution.style.display = 'none';
     }
     

@@ -1,5 +1,3 @@
-let STORAGE_KEY = 'studentData';
-
 let defaultUserData = {
   acquisitions: {},
   history: []
@@ -9,7 +7,7 @@ let UserData = {};
 
 
 UserData.load = function() {
-  let data = localStorage.getItem(STORAGE_KEY);
+  let data = localStorage.getItem('studentData');
   if (data) {
     return JSON.parse(data);
   }return { ...defaultUserData, acquisitions: {}, history: [] };
@@ -17,7 +15,7 @@ UserData.load = function() {
 
 
 UserData.save = function(userData) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+  localStorage.setItem('studentData', JSON.stringify(userData));
 };
 
 
