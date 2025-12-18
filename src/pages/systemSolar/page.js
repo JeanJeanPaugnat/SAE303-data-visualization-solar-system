@@ -1,16 +1,26 @@
-import { SolarSystemView } from "@/ui/solar-system";
-import { htmlToDOM } from "@/lib/utils.js";
+
+//template
 import template from "./template.html?raw";
-import { setupPanZoom } from "./draggableCanvas.js";
-import { ModalView } from "@/ui/modal";
-import { Star } from "../../data/searchingStar.js";
-import { HeadeskillsSideBarView } from "@/ui/skillsSideBar";
+
+//lib
+import { setupPanZoom } from "@/lib/draggableCanvas.js";
 import { Animation } from "@/lib/animation.js";
-import { featuresView } from "../../ui/features/index.js";
-import { UserData } from '@/data/userData.js';
+import { htmlToDOM } from "@/lib/utils.js";
+
+//ui
+import { SolarSystemView } from "@/ui/solar-system";
+
+import { ModalView } from "@/ui/modal";
+import { featuresView } from "@/ui/features/index.js";
 import { pausePlayBtnView } from "@/ui/playPauseBtn/index.js";
 import { hoverTextView } from "@/ui/hoverText/index.js";
 import { HistoriqueItemView } from "@/ui/historiqueItem/index.js";
+import { HeadeskillsSideBarView } from "@/ui/skillsSideBar";
+
+//data
+import { Star } from "@/data/searchingStar.js";
+import { UserData } from '@/data/userData.js';
+
 
 
 
@@ -44,15 +54,16 @@ C.togglePausePlay = function() {
 }
 
 C.hoverOnStar = async function(event) {
-    const starElement = event.currentTarget;
+    let starElement = event.currentTarget;
 
     let starData = await Star.getStarDataById(starElement.dataset.acs);
     
-    const userData = UserData.load();
-    const acquisition = userData.acquisitions[starData.code];
-    const percentage = acquisition ? acquisition.percentage : 0;
+    let userData = UserData.user;
+    console.log(userData);
+    let acquisition = userData.acquisitions[starData.code];
+    let percentage = acquisition ? acquisition.percentage : 0;
     console.log(percentage);
-    const tooltipContainer = document.getElementById('tooltip-container');
+    let tooltipContainer = document.getElementById('tooltip-container');
     
     if (!tooltipInstance) {
         tooltipInstance = new hoverTextView();
@@ -66,7 +77,7 @@ C.hoverOnStar = async function(event) {
     
     tooltipContainer.style.display = 'block';
 
-    const updateTooltipPosition = (e) => {
+    let updateTooltipPosition = (e) => {
         tooltipContainer.style.left = `${e.clientX + 10}px`;
         tooltipContainer.style.top = `${e.clientY + 10}px`;
     };
@@ -76,8 +87,8 @@ C.hoverOnStar = async function(event) {
 }
 
 C.hoverOutStar = function(event) {
-    const starElement = event.currentTarget;
-    const tooltipContainer = document.getElementById('tooltip-container');
+    let starElement = event.currentTarget;
+    let tooltipContainer = document.getElementById('tooltip-container');
     tooltipContainer.style.display = 'none';
 
     if (starElement._updateTooltipPosition) {
@@ -86,8 +97,8 @@ C.hoverOutStar = function(event) {
 }
 
 C.updateButtonIcon = function() {
-    const pauseIcon = document.getElementById('pauseIcon');
-    const playIcon = document.getElementById('playIcon');
+    let pauseIcon = document.getElementById('pauseIcon');
+    let playIcon = document.getElementById('playIcon');
     
     if (animationState.isPlaying) {
         pauseIcon.style.display = 'block';
@@ -100,35 +111,35 @@ C.updateButtonIcon = function() {
 
 
 C.handler_clickStar = async function(event) {
-    const starData = await Star.getStarDataById(event.currentTarget.dataset.acs);
-    const acId = starData.code;
+    let starData = await Star.getStarDataById(event.currentTarget.dataset.acs);
+    let acId = starData.code;
 
-    const modal = new ModalView();
-    const mainContainer = document.querySelector('#mainContainer');
+    let modal = new ModalView();
+    let mainContainer = document.querySelector('#mainContainer');
     
     // Supprime old modal si il existe
-    const existingModal = mainContainer.querySelector('.modal-overlay');
+    let existingModal = mainContainer.querySelector('.modal-overlay');
     if (existingModal) {
         existingModal.remove();
     }
 
     // Créer et ajouter newmodal
-    const modalElement = modal.dom(starData);
+    let modalElement = modal.dom(starData);
     document.body.appendChild(modalElement);
     
     // Charger les données utilisateur
-    const userData = UserData.load();
+    let userData = UserData.user;
 
     // Gérer l'affichage de l'historique
-    const historyForAc = userData.history.filter(item => item.ac === acId);
-    const historySection = modalElement.querySelector('.history-section');
+    let historyForAc = userData.history.filter(item => item.ac === acId);
+    let historySection = modalElement.querySelector('.history-section');
 
     if (historyForAc.length > 0) {
         historySection.style.display = 'block';
-        const historyList = historySection.querySelector('.history-list');
+        let historyList = historySection.querySelector('.history-list');
         historyList.innerHTML = ''; // Clear previous items
         historyForAc.forEach(historyItemData => {
-            const historiqueItem = new HistoriqueItemView();
+            let historiqueItem = new HistoriqueItemView();
             console.log(historyItemData);
             historyList.appendChild(historiqueItem.dom(historyItemData));
         });
@@ -136,8 +147,8 @@ C.handler_clickStar = async function(event) {
         historySection.style.display = 'none';
     }
     
-    const currentAcquisition = userData.acquisitions[acId];
-    const percentage = currentAcquisition ? currentAcquisition.percentage : 0;
+    let currentAcquisition = userData.acquisitions[acId];
+    let percentage = currentAcquisition ? currentAcquisition.percentage : 0;
     modal.setProgress(percentage);
 
     // Appliquer la couleur
@@ -146,11 +157,11 @@ C.handler_clickStar = async function(event) {
     }
     
     // Écouteur d'événement pour le bouton de sauvegarde
-    const saveButton = modal.cardElement.querySelector('.actions .btn-primary');
+    let saveButton = modal.cardElement.querySelector('.actions .btn-primary');
     if (saveButton) {
         saveButton.addEventListener('click', () => {
-            const progressSlider = modal.cardElement.querySelector('.custom-slider');
-            const newPercentage = parseInt(progressSlider.value, 10);
+            let progressSlider = modal.cardElement.querySelector('.custom-slider');
+            let newPercentage = parseInt(progressSlider.value, 10);
             UserData.updateAcquisition(acId, newPercentage);
         });
     }
@@ -167,22 +178,22 @@ C.clickExportData = function() {
 }
 
 C.importData = function() {
-    const inputElement = document.createElement('input');
+    let inputElement = document.createElement('input');
     inputElement.type = 'file';
     inputElement.accept = '.json,application/json';
     
     inputElement.addEventListener('change', (event) => {
-        const file = event.target.files[0];
+        let file = event.target.files[0];
         if (!file) {
             console.log('Aucun fichier sélectionné');
             return;
         }
         
-        const reader = new FileReader();
+        let reader = new FileReader();
         
         reader.onload = (e) => {
             try {
-                const fileContent = e.target.result;
+                let fileContent = e.target.result;
                 UserData.import(fileContent);
                 console.log('Données importées avec succès');
                 // Recharger la page pour afficher les nouvelles données
@@ -220,8 +231,7 @@ let V = {
 };
 
 V.init = function() {
-//   Star.loadStarsData();
-//     const userData = UserData.load();
+
   V.rootPage = htmlToDOM(template);
   V.solarSystem = new SolarSystemView();
 
@@ -242,7 +252,7 @@ V.attachEvents = function(rootPage, solarSystem) {
     let resetStorageBtn = rootPage.querySelector('#resetStorageBtn');
     resetStorageBtn.addEventListener('click', C.resetLocalStorage);
     // Setup pause/play button
-    const pausePlayBtn = rootPage.querySelector('#pausePlayBtn');
+    let pausePlayBtn = rootPage.querySelector('#pausePlayBtn');
     pausePlayBtn.addEventListener('click', C.togglePausePlay);
     let btnExportData = rootPage.querySelector('#exportDataBtn');
     btnExportData.addEventListener('click', C.clickExportData);

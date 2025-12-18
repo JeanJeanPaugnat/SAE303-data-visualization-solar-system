@@ -3,14 +3,24 @@ let defaultUserData = {
   history: []
 };
 
-let UserData = {};
+let UserData = {
+    user: null,
+};
+
+
+
 
 
 UserData.load = function() {
-  let data = localStorage.getItem('studentData');
-  if (data) {
-    return JSON.parse(data);
-  }return { ...defaultUserData, acquisitions: {}, history: [] };
+  if (UserData.user !== null) {
+    return UserData.user;
+  }else {
+    let data = localStorage.getItem('studentData');
+    if (data) {
+      UserData.user = JSON.parse(data);
+      return UserData.user;
+    }return { ...defaultUserData, acquisitions: {}, history: [] };
+  }
 };
 
 
@@ -20,7 +30,7 @@ UserData.save = function(userData) {
 
 
 UserData.updateAcquisition = function(acId, percentage) {
-  let userData = UserData.load();
+  let userData = UserData.user;
 
   let newPercentage = Math.max(0, Math.min(100, percentage));
 
@@ -61,5 +71,8 @@ UserData.import = function(importedData) {
   // Notifier l'application du changement
   window.dispatchEvent(new CustomEvent('userDataChanged', { detail: parsedData }));
 };
+
+
+UserData.user = UserData.load();
 
 export { UserData };
