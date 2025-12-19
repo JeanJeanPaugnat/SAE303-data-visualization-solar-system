@@ -87,7 +87,6 @@ Star.getStarDataById = function(starId) {
         color: color
     };
     
-    console.log("starData:", starData);
     return starData;
 }
 

@@ -26,6 +26,7 @@ class HistoriqueItemView {
         score.textContent = `${data.percentage}%`;
         
         evolution.style.display = 'none';
+        //pas géré encore à voir si necessaire 
     }
     
     return element;

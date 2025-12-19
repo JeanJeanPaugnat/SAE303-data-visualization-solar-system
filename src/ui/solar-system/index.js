@@ -57,27 +57,18 @@ class SolarSystemView {
     });
   }
 
-  /**
-   * Met à jour l'affichage visuel d'une étoile selon son pourcentage de déploiement
-   * @param {string} acId - L'identifiant de l'AC (ex: "AC15.01")
-   * @param {number} percentage - Le pourcentage entre 0 et 100
-   */
+
   updateStarProgress(acId, percentage) {
     const stars = this.getStars();
     stars.forEach(star => {
       const starAcId = star.getAttribute('data-acs');
       if (starAcId === acId) {
-        // Arrondir à la dizaine la plus proche pour correspondre aux classes CSS
         const roundedPercentage = Math.round(percentage / 10) * 10;
         star.setAttribute('data-percentage', roundedPercentage);
       }
     });
   }
 
-  /**
-   * Met à jour toutes les étoiles en fonction des données utilisateur
-   * @param {Object} userData - Les données utilisateur contenant les acquisitions
-   */
   updateAllStarsProgress(userData) {
     if (!userData || !userData.acquisitions) return;
     
@@ -87,11 +78,6 @@ class SolarSystemView {
     });
   }
 
-  /**
-   * Met à jour l'affichage visuel d'une planète de niveau selon le pourcentage moyen des AC du niveau
-   * @param {string} levelId - L'identifiant de la planète de niveau (ex: "skill-entreprendre-level1-center")
-   * @param {number} percentage - Le pourcentage moyen entre 0 et 100
-   */
   updateLevelPlanetProgress(levelId, percentage) {
     const planet = this.root.querySelector(`#${levelId}`);
     if (planet) {
@@ -100,27 +86,19 @@ class SolarSystemView {
     }
   }
 
-  /**
-   * Calcule et met à jour toutes les planètes de niveau en fonction des données utilisateur
-   */
+
   updateAllLevelPlanetsProgress(userData) {
     if (!userData || !userData.acquisitions) return;
 
-    // Trouver toutes les planètes de niveau
     const levelPlanets = this.root.querySelectorAll('[id$="-center"]');
     
     levelPlanets.forEach(planet => {
       const planetId = planet.id;
-      
-      // Extraire l'info du niveau (ex: "skill-entreprendre-level1-center" -> "skill-entreprendre-level1")
       const levelPrefix = planetId.replace('-center', '');
-      
-      // Trouver toutes les étoiles AC de ce niveau
       const levelStars = this.root.querySelectorAll(`[id^="${levelPrefix}-ac"]`);
       
       if (levelStars.length === 0) return;
       
-      // Calculer le pourcentage moyen des AC de ce niveau
       let totalPercentage = 0;
       let validAcCount = 0;
       
@@ -140,9 +118,7 @@ class SolarSystemView {
     this.updateSkillPlanetsProgress(userData);
   }
 
-  /**
-   * Met à jour les planètes principales des skills avec le pourcentage moyen de tous leurs niveaux
-   */
+
   updateSkillPlanetsProgress(userData) {
     if (!userData || !userData.acquisitions) return;
 

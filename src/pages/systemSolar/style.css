@@ -2,6 +2,8 @@
     background-color: #10131f; 
     position: relative;
     overflow: hidden;
+
+    
     /* Étoiles lointaines en arrière-plan - beaucoup plus nombreuses et visibles */
     background-image: 
         /* Couche 1: Nombreuses petites étoiles blanches */
