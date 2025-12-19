@@ -163,6 +163,10 @@ C.handler_clickStar = async function(event) {
             let progressSlider = modal.cardElement.querySelector('.custom-slider');
             let newPercentage = parseInt(progressSlider.value, 10);
             UserData.updateAcquisition(acId, newPercentage);
+            // Mettre à jour l'affichage visuel de l'étoile et de la planète de niveau
+            V.solarSystem.updateStarProgress(acId, newPercentage);
+            let userData = UserData.load();
+            V.solarSystem.updateAllLevelPlanetsProgress(userData);
         });
     }
 }
@@ -240,6 +244,12 @@ V.init = function() {
             
     V.rootPage.appendChild( new featuresView().dom() );
     V.rootPage.appendChild( new pausePlayBtnView().dom() );
+  
+  // Mettre à jour l'affichage visuel des étoiles et planètes selon les données utilisateur
+  let userData = UserData.load();
+  V.solarSystem.updateAllStarsProgress(userData);
+  V.solarSystem.updateAllLevelPlanetsProgress(userData);
+  
   V.attachEvents(V.rootPage, V.solarSystem);
   return V.rootPage;
 };
@@ -260,6 +270,12 @@ V.attachEvents = function(rootPage, solarSystem) {
     btnImportData.addEventListener('click', C.importData);
     solarSystem.addAllStarsClickListener(C.handler_clickStar);
     solarSystem.addAllStarsHoverListener(C.hoverOnStar, C.hoverOutStar);
+    
+    // Écouter les changements de données utilisateur pour mettre à jour l'affichage
+    window.addEventListener('userDataChanged', (event) => {
+        solarSystem.updateAllStarsProgress(event.detail);
+        solarSystem.updateAllLevelPlanetsProgress(event.detail);
+    });
     
     setupPanZoom(rootPage, solarSystem);
 }

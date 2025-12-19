@@ -6,3 +6,293 @@
     cursor: pointer;
     filter: drop-shadow(0 0 5px #FFD700);
 }
+
+/* Système de progression visuelle des acStar par pourcentage */
+.acStar {
+    fill: #444444; /* 0% - Gris foncé par défaut */
+}
+
+/* Progression du gris foncé au jaune */
+.acStar[data-percentage="0"] {
+    fill: #444444;
+    filter: drop-shadow(0 0 0px transparent);
+}
+
+.acStar[data-percentage="10"] {
+    fill: #3f3f3f;
+    filter: drop-shadow(0 0 2px #3f3f3f);
+}
+
+.acStar[data-percentage="20"] {
+    fill: #555555;
+    filter: drop-shadow(0 0 3px #666600);
+}
+
+.acStar[data-percentage="30"] {
+    fill: #797979;
+    filter: drop-shadow(0 0 4px #797979);
+}
+
+.acStar[data-percentage="40"] {
+    fill: #969696;
+    filter: drop-shadow(0 0 5px #969696);
+}
+
+.acStar[data-percentage="50"] {
+    fill: #b3b3b3;
+    filter: drop-shadow(0 0 6px #b3b3b3);
+}
+
+.acStar[data-percentage="60"] {
+    fill: #c9c9c9;
+    filter: drop-shadow(0 0 7px #c9c9c9);
+}
+
+.acStar[data-percentage="70"] {
+    fill: #dfdfdf;
+    filter: drop-shadow(0 0 8px #dfdfdf);
+}
+
+.acStar[data-percentage="80"] {
+    fill: #f1f1f1;
+    filter: drop-shadow(0 0 9px #f1f1f1);
+}
+
+.acStar[data-percentage="90"] {
+    fill: #ffffff;
+    filter: drop-shadow(0 0 10px #ffffff);
+}
+
+.acStar[data-percentage="100"] {
+    fill: #FFD700; /* 100% - Jaune plein */
+    filter: drop-shadow(0 0 12px #FFD700);
+}
+
+/* Planètes de niveau avec effet de halo progressif */
+[id$="-center"] {
+    transition: all 0.4s ease;
+}
+
+/* Progression des planètes de 0% à 100% avec effet de halo */
+[id$="-center"][data-level-percentage="0"] {
+    opacity: 0.3;
+    filter: drop-shadow(0 0 0px transparent);
+}
+
+/* Entreprendre - Vert #77FF00 */
+[id^="skill-entreprendre"][id$="-center"][data-level-percentage="10"] { opacity: 0.4; filter: drop-shadow(0 0 3px rgba(119, 255, 0, 0.3)); }
+[id^="skill-entreprendre"][id$="-center"][data-level-percentage="20"] { opacity: 0.5; filter: drop-shadow(0 0 5px rgba(119, 255, 0, 0.4)); }
+[id^="skill-entreprendre"][id$="-center"][data-level-percentage="30"] { opacity: 0.55; filter: drop-shadow(0 0 7px rgba(119, 255, 0, 0.5)); }
+[id^="skill-entreprendre"][id$="-center"][data-level-percentage="40"] { opacity: 0.6; filter: drop-shadow(0 0 10px rgba(119, 255, 0, 0.6)); }
+[id^="skill-entreprendre"][id$="-center"][data-level-percentage="50"] { opacity: 0.7; filter: drop-shadow(0 0 12px rgba(119, 255, 0, 0.7)); }
+[id^="skill-entreprendre"][id$="-center"][data-level-percentage="60"] { opacity: 0.8; filter: drop-shadow(0 0 15px rgba(119, 255, 0, 0.8)); }
+[id^="skill-entreprendre"][id$="-center"][data-level-percentage="70"] { opacity: 0.85; filter: drop-shadow(0 0 18px rgba(119, 255, 0, 0.9)); }
+[id^="skill-entreprendre"][id$="-center"][data-level-percentage="80"] { opacity: 0.9; filter: drop-shadow(0 0 22px rgba(119, 255, 0, 0.9)) drop-shadow(0 0 35px rgba(119, 255, 0, 0.5)); }
+[id^="skill-entreprendre"][id$="-center"][data-level-percentage="90"] { opacity: 0.95; filter: drop-shadow(0 0 25px rgba(119, 255, 0, 1)) drop-shadow(0 0 40px rgba(119, 255, 0, 0.6)); }
+[id^="skill-entreprendre"][id$="-center"][data-level-percentage="100"] { opacity: 1; filter: drop-shadow(0 0 30px rgba(119, 255, 0, 1)) drop-shadow(0 0 50px rgba(119, 255, 0, 0.8)) drop-shadow(0 0 70px rgba(119, 255, 0, 0.4)); }
+
+/* Exprimer - Cyan #00D0FF */
+[id^="skill-exprimer"][id$="-center"][data-level-percentage="10"] { opacity: 0.4; filter: drop-shadow(0 0 3px rgba(0, 208, 255, 0.3)); }
+[id^="skill-exprimer"][id$="-center"][data-level-percentage="20"] { opacity: 0.5; filter: drop-shadow(0 0 5px rgba(0, 208, 255, 0.4)); }
+[id^="skill-exprimer"][id$="-center"][data-level-percentage="30"] { opacity: 0.55; filter: drop-shadow(0 0 7px rgba(0, 208, 255, 0.5)); }
+[id^="skill-exprimer"][id$="-center"][data-level-percentage="40"] { opacity: 0.6; filter: drop-shadow(0 0 10px rgba(0, 208, 255, 0.6)); }
+[id^="skill-exprimer"][id$="-center"][data-level-percentage="50"] { opacity: 0.7; filter: drop-shadow(0 0 12px rgba(0, 208, 255, 0.7)); }
+[id^="skill-exprimer"][id$="-center"][data-level-percentage="60"] { opacity: 0.8; filter: drop-shadow(0 0 15px rgba(0, 208, 255, 0.8)); }
+[id^="skill-exprimer"][id$="-center"][data-level-percentage="70"] { opacity: 0.85; filter: drop-shadow(0 0 18px rgba(0, 208, 255, 0.9)); }
+[id^="skill-exprimer"][id$="-center"][data-level-percentage="80"] { opacity: 0.9; filter: drop-shadow(0 0 22px rgba(0, 208, 255, 0.9)) drop-shadow(0 0 35px rgba(0, 208, 255, 0.5)); }
+[id^="skill-exprimer"][id$="-center"][data-level-percentage="90"] { opacity: 0.95; filter: drop-shadow(0 0 25px rgba(0, 208, 255, 1)) drop-shadow(0 0 40px rgba(0, 208, 255, 0.6)); }
+[id^="skill-exprimer"][id$="-center"][data-level-percentage="100"] { opacity: 1; filter: drop-shadow(0 0 30px rgba(0, 208, 255, 1)) drop-shadow(0 0 50px rgba(0, 208, 255, 0.8)) drop-shadow(0 0 70px rgba(0, 208, 255, 0.4)); }
+
+/* Developper - Magenta #FB00FF */
+[id^="skill-developper"][id$="-center"][data-level-percentage="10"] { opacity: 0.4; filter: drop-shadow(0 0 3px rgba(251, 0, 255, 0.3)); }
+[id^="skill-developper"][id$="-center"][data-level-percentage="20"] { opacity: 0.5; filter: drop-shadow(0 0 5px rgba(251, 0, 255, 0.4)); }
+[id^="skill-developper"][id$="-center"][data-level-percentage="30"] { opacity: 0.55; filter: drop-shadow(0 0 7px rgba(251, 0, 255, 0.5)); }
+[id^="skill-developper"][id$="-center"][data-level-percentage="40"] { opacity: 0.6; filter: drop-shadow(0 0 10px rgba(251, 0, 255, 0.6)); }
+[id^="skill-developper"][id$="-center"][data-level-percentage="50"] { opacity: 0.7; filter: drop-shadow(0 0 12px rgba(251, 0, 255, 0.7)); }
+[id^="skill-developper"][id$="-center"][data-level-percentage="60"] { opacity: 0.8; filter: drop-shadow(0 0 15px rgba(251, 0, 255, 0.8)); }
+[id^="skill-developper"][id$="-center"][data-level-percentage="70"] { opacity: 0.85; filter: drop-shadow(0 0 18px rgba(251, 0, 255, 0.9)); }
+[id^="skill-developper"][id$="-center"][data-level-percentage="80"] { opacity: 0.9; filter: drop-shadow(0 0 22px rgba(251, 0, 255, 0.9)) drop-shadow(0 0 35px rgba(251, 0, 255, 0.5)); }
+[id^="skill-developper"][id$="-center"][data-level-percentage="90"] { opacity: 0.95; filter: drop-shadow(0 0 25px rgba(251, 0, 255, 1)) drop-shadow(0 0 40px rgba(251, 0, 255, 0.6)); }
+[id^="skill-developper"][id$="-center"][data-level-percentage="100"] { opacity: 1; filter: drop-shadow(0 0 30px rgba(251, 0, 255, 1)) drop-shadow(0 0 50px rgba(251, 0, 255, 0.8)) drop-shadow(0 0 70px rgba(251, 0, 255, 0.4)); }
+
+/* Comprendre - Rouge #FF0000 */
+[id^="skill-comprendre"][id$="-center"][data-level-percentage="10"] { opacity: 0.4; filter: drop-shadow(0 0 3px rgba(255, 0, 0, 0.3)); }
+[id^="skill-comprendre"][id$="-center"][data-level-percentage="20"] { opacity: 0.5; filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.4)); }
+[id^="skill-comprendre"][id$="-center"][data-level-percentage="30"] { opacity: 0.55; filter: drop-shadow(0 0 7px rgba(255, 0, 0, 0.5)); }
+[id^="skill-comprendre"][id$="-center"][data-level-percentage="40"] { opacity: 0.6; filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.6)); }
+[id^="skill-comprendre"][id$="-center"][data-level-percentage="50"] { opacity: 0.7; filter: drop-shadow(0 0 12px rgba(255, 0, 0, 0.7)); }
+[id^="skill-comprendre"][id$="-center"][data-level-percentage="60"] { opacity: 0.8; filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.8)); }
+[id^="skill-comprendre"][id$="-center"][data-level-percentage="70"] { opacity: 0.85; filter: drop-shadow(0 0 18px rgba(255, 0, 0, 0.9)); }
+[id^="skill-comprendre"][id$="-center"][data-level-percentage="80"] { opacity: 0.9; filter: drop-shadow(0 0 22px rgba(255, 0, 0, 0.9)) drop-shadow(0 0 35px rgba(255, 0, 0, 0.5)); }
+[id^="skill-comprendre"][id$="-center"][data-level-percentage="90"] { opacity: 0.95; filter: drop-shadow(0 0 25px rgba(255, 0, 0, 1)) drop-shadow(0 0 40px rgba(255, 0, 0, 0.6)); }
+[id^="skill-comprendre"][id$="-center"][data-level-percentage="100"] { opacity: 1; filter: drop-shadow(0 0 30px rgba(255, 0, 0, 1)) drop-shadow(0 0 50px rgba(255, 0, 0, 0.8)) drop-shadow(0 0 70px rgba(255, 0, 0, 0.4)); }
+
+/* Concevoir - Jaune #FFEA00 */
+[id^="skill-concevoir"][id$="-center"][data-level-percentage="10"] { opacity: 0.4; filter: drop-shadow(0 0 3px rgba(255, 234, 0, 0.3)); }
+[id^="skill-concevoir"][id$="-center"][data-level-percentage="20"] { opacity: 0.5; filter: drop-shadow(0 0 5px rgba(255, 234, 0, 0.4)); }
+[id^="skill-concevoir"][id$="-center"][data-level-percentage="30"] { opacity: 0.55; filter: drop-shadow(0 0 7px rgba(255, 234, 0, 0.5)); }
+[id^="skill-concevoir"][id$="-center"][data-level-percentage="40"] { opacity: 0.6; filter: drop-shadow(0 0 10px rgba(255, 234, 0, 0.6)); }
+[id^="skill-concevoir"][id$="-center"][data-level-percentage="50"] { opacity: 0.7; filter: drop-shadow(0 0 12px rgba(255, 234, 0, 0.7)); }
+[id^="skill-concevoir"][id$="-center"][data-level-percentage="60"] { opacity: 0.8; filter: drop-shadow(0 0 15px rgba(255, 234, 0, 0.8)); }
+[id^="skill-concevoir"][id$="-center"][data-level-percentage="70"] { opacity: 0.85; filter: drop-shadow(0 0 18px rgba(255, 234, 0, 0.9)); }
+[id^="skill-concevoir"][id$="-center"][data-level-percentage="80"] { opacity: 0.9; filter: drop-shadow(0 0 22px rgba(255, 234, 0, 0.9)) drop-shadow(0 0 35px rgba(255, 234, 0, 0.5)); }
+[id^="skill-concevoir"][id$="-center"][data-level-percentage="90"] { opacity: 0.95; filter: drop-shadow(0 0 25px rgba(255, 234, 0, 1)) drop-shadow(0 0 40px rgba(255, 234, 0, 0.6)); }
+[id^="skill-concevoir"][id$="-center"][data-level-percentage="100"] { opacity: 1; filter: drop-shadow(0 0 30px rgba(255, 234, 0, 1)) drop-shadow(0 0 50px rgba(255, 234, 0, 0.8)) drop-shadow(0 0 70px rgba(255, 234, 0, 0.4)); }
+
+
+
+#sun{
+    filter: drop-shadow(0 0 20px #ff9100 );
+}
+
+/* ===== ANIMATIONS DE PULSATION POUR LES PLANÈTES DE SKILLS ===== */
+
+/* Animations Entreprendre - Vert #77FF00 */
+@keyframes pulse-entreprendre-weak {
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(119, 255, 0, 0.6)); }
+    50% { filter: drop-shadow(0 0 10px rgba(119, 255, 0, 0.8)) drop-shadow(0 0 15px rgba(119, 255, 0, 0.5)); }
+}
+@keyframes pulse-entreprendre-medium {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(119, 255, 0, 0.7)) drop-shadow(0 0 15px rgba(119, 255, 0, 0.5)); }
+    50% { filter: drop-shadow(0 0 20px rgba(119, 255, 0, 0.9)) drop-shadow(0 0 30px rgba(119, 255, 0, 0.6)); }
+}
+@keyframes pulse-entreprendre-strong {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(119, 255, 0, 0.8)) drop-shadow(0 0 25px rgba(119, 255, 0, 0.6)); }
+    50% { filter: drop-shadow(0 0 35px rgba(119, 255, 0, 1)) drop-shadow(0 0 50px rgba(119, 255, 0, 0.7)) drop-shadow(0 0 70px rgba(119, 255, 0, 0.4)); }
+}
+@keyframes pulse-entreprendre-intense {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(119, 255, 0, 1)) drop-shadow(0 0 35px rgba(119, 255, 0, 0.7)); }
+    50% { filter: drop-shadow(0 0 45px rgba(119, 255, 0, 1)) drop-shadow(0 0 65px rgba(119, 255, 0, 0.8)) drop-shadow(0 0 85px rgba(119, 255, 0, 0.5)); }
+}
+
+/* Animations Exprimer - Cyan #00D0FF */
+@keyframes pulse-exprimer-weak {
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(0, 208, 255, 0.6)); }
+    50% { filter: drop-shadow(0 0 10px rgba(0, 208, 255, 0.8)) drop-shadow(0 0 15px rgba(0, 208, 255, 0.5)); }
+}
+@keyframes pulse-exprimer-medium {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 208, 255, 0.7)) drop-shadow(0 0 15px rgba(0, 208, 255, 0.5)); }
+    50% { filter: drop-shadow(0 0 20px rgba(0, 208, 255, 0.9)) drop-shadow(0 0 30px rgba(0, 208, 255, 0.6)); }
+}
+@keyframes pulse-exprimer-strong {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(0, 208, 255, 0.8)) drop-shadow(0 0 25px rgba(0, 208, 255, 0.6)); }
+    50% { filter: drop-shadow(0 0 35px rgba(0, 208, 255, 1)) drop-shadow(0 0 50px rgba(0, 208, 255, 0.7)) drop-shadow(0 0 70px rgba(0, 208, 255, 0.4)); }
+}
+@keyframes pulse-exprimer-intense {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 208, 255, 1)) drop-shadow(0 0 35px rgba(0, 208, 255, 0.7)); }
+    50% { filter: drop-shadow(0 0 45px rgba(0, 208, 255, 1)) drop-shadow(0 0 65px rgba(0, 208, 255, 0.8)) drop-shadow(0 0 85px rgba(0, 208, 255, 0.5)); }
+}
+
+/* Animations Developper - Magenta #FB00FF */
+@keyframes pulse-developper-weak {
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(251, 0, 255, 0.6)); }
+    50% { filter: drop-shadow(0 0 10px rgba(251, 0, 255, 0.8)) drop-shadow(0 0 15px rgba(251, 0, 255, 0.5)); }
+}
+@keyframes pulse-developper-medium {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(251, 0, 255, 0.7)) drop-shadow(0 0 15px rgba(251, 0, 255, 0.5)); }
+    50% { filter: drop-shadow(0 0 20px rgba(251, 0, 255, 0.9)) drop-shadow(0 0 30px rgba(251, 0, 255, 0.6)); }
+}
+@keyframes pulse-developper-strong {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(251, 0, 255, 0.8)) drop-shadow(0 0 25px rgba(251, 0, 255, 0.6)); }
+    50% { filter: drop-shadow(0 0 35px rgba(251, 0, 255, 1)) drop-shadow(0 0 50px rgba(251, 0, 255, 0.7)) drop-shadow(0 0 70px rgba(251, 0, 255, 0.4)); }
+}
+@keyframes pulse-developper-intense {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(251, 0, 255, 1)) drop-shadow(0 0 35px rgba(251, 0, 255, 0.7)); }
+    50% { filter: drop-shadow(0 0 45px rgba(251, 0, 255, 1)) drop-shadow(0 0 65px rgba(251, 0, 255, 0.8)) drop-shadow(0 0 85px rgba(251, 0, 255, 0.5)); }
+}
+
+/* Animations Comprendre - Rouge #FF0000 */
+@keyframes pulse-comprendre-weak {
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.6)); }
+    50% { filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8)) drop-shadow(0 0 15px rgba(255, 0, 0, 0.5)); }
+}
+@keyframes pulse-comprendre-medium {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.7)) drop-shadow(0 0 15px rgba(255, 0, 0, 0.5)); }
+    50% { filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.9)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.6)); }
+}
+@keyframes pulse-comprendre-strong {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.8)) drop-shadow(0 0 25px rgba(255, 0, 0, 0.6)); }
+    50% { filter: drop-shadow(0 0 35px rgba(255, 0, 0, 1)) drop-shadow(0 0 50px rgba(255, 0, 0, 0.7)) drop-shadow(0 0 70px rgba(255, 0, 0, 0.4)); }
+}
+@keyframes pulse-comprendre-intense {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 0, 0, 1)) drop-shadow(0 0 35px rgba(255, 0, 0, 0.7)); }
+    50% { filter: drop-shadow(0 0 45px rgba(255, 0, 0, 1)) drop-shadow(0 0 65px rgba(255, 0, 0, 0.8)) drop-shadow(0 0 85px rgba(255, 0, 0, 0.5)); }
+}
+
+/* Animations Concevoir - Jaune #FFEA00 */
+@keyframes pulse-concevoir-weak {
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 234, 0, 0.6)); }
+    50% { filter: drop-shadow(0 0 10px rgba(255, 234, 0, 0.8)) drop-shadow(0 0 15px rgba(255, 234, 0, 0.5)); }
+}
+@keyframes pulse-concevoir-medium {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 234, 0, 0.7)) drop-shadow(0 0 15px rgba(255, 234, 0, 0.5)); }
+    50% { filter: drop-shadow(0 0 20px rgba(255, 234, 0, 0.9)) drop-shadow(0 0 30px rgba(255, 234, 0, 0.6)); }
+}
+@keyframes pulse-concevoir-strong {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 234, 0, 0.8)) drop-shadow(0 0 25px rgba(255, 234, 0, 0.6)); }
+    50% { filter: drop-shadow(0 0 35px rgba(255, 234, 0, 1)) drop-shadow(0 0 50px rgba(255, 234, 0, 0.7)) drop-shadow(0 0 70px rgba(255, 234, 0, 0.4)); }
+}
+@keyframes pulse-concevoir-intense {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 234, 0, 1)) drop-shadow(0 0 35px rgba(255, 234, 0, 0.7)); }
+    50% { filter: drop-shadow(0 0 45px rgba(255, 234, 0, 1)) drop-shadow(0 0 65px rgba(255, 234, 0, 0.8)) drop-shadow(0 0 85px rgba(255, 234, 0, 0.5)); }
+}
+
+/* Application des animations - Entreprendre */
+[id="skill-entreprendre-planet"][data-level-percentage="10"],
+[id="skill-entreprendre-planet"][data-level-percentage="20"] { animation: pulse-entreprendre-weak 3s ease-in-out infinite; }
+[id="skill-entreprendre-planet"][data-level-percentage="30"],
+[id="skill-entreprendre-planet"][data-level-percentage="40"],
+[id="skill-entreprendre-planet"][data-level-percentage="50"] { animation: pulse-entreprendre-medium 2.5s ease-in-out infinite; }
+[id="skill-entreprendre-planet"][data-level-percentage="60"],
+[id="skill-entreprendre-planet"][data-level-percentage="70"] { animation: pulse-entreprendre-strong 2s ease-in-out infinite; }
+[id="skill-entreprendre-planet"][data-level-percentage="80"],
+[id="skill-entreprendre-planet"][data-level-percentage="90"],
+[id="skill-entreprendre-planet"][data-level-percentage="100"] { animation: pulse-entreprendre-intense 1.5s ease-in-out infinite; }
+
+/* Application des animations - Exprimer */
+[id="skill-exprimer-planet"][data-level-percentage="10"],
+[id="skill-exprimer-planet"][data-level-percentage="20"] { animation: pulse-exprimer-weak 3s ease-in-out infinite; }
+[id="skill-exprimer-planet"][data-level-percentage="30"],
+[id="skill-exprimer-planet"][data-level-percentage="40"],
+[id="skill-exprimer-planet"][data-level-percentage="50"] { animation: pulse-exprimer-medium 2.5s ease-in-out infinite; }
+[id="skill-exprimer-planet"][data-level-percentage="60"],
+[id="skill-exprimer-planet"][data-level-percentage="70"] { animation: pulse-exprimer-strong 2s ease-in-out infinite; }
+[id="skill-exprimer-planet"][data-level-percentage="80"],
+[id="skill-exprimer-planet"][data-level-percentage="90"],
+[id="skill-exprimer-planet"][data-level-percentage="100"] { animation: pulse-exprimer-intense 1.5s ease-in-out infinite; }
+
+/* Application des animations - Developper */
+[id="skill-developper-planet"][data-level-percentage="10"],
+[id="skill-developper-planet"][data-level-percentage="20"] { animation: pulse-developper-weak 3s ease-in-out infinite; }
+[id="skill-developper-planet"][data-level-percentage="30"],
+[id="skill-developper-planet"][data-level-percentage="40"],
+[id="skill-developper-planet"][data-level-percentage="50"] { animation: pulse-developper-medium 2.5s ease-in-out infinite; }
+[id="skill-developper-planet"][data-level-percentage="60"],
+[id="skill-developper-planet"][data-level-percentage="70"] { animation: pulse-developper-strong 2s ease-in-out infinite; }
+[id="skill-developper-planet"][data-level-percentage="80"],
+[id="skill-developper-planet"][data-level-percentage="90"],
+[id="skill-developper-planet"][data-level-percentage="100"] { animation: pulse-developper-intense 1.5s ease-in-out infinite; }
+
+/* Application des animations - Comprendre */
+[id="skill-comprendre-planet"][data-level-percentage="10"],
+[id="skill-comprendre-planet"][data-level-percentage="20"] { animation: pulse-comprendre-weak 3s ease-in-out infinite; }
+[id="skill-comprendre-planet"][data-level-percentage="30"],
+[id="skill-comprendre-planet"][data-level-percentage="40"],
+[id="skill-comprendre-planet"][data-level-percentage="50"] { animation: pulse-comprendre-medium 2.5s ease-in-out infinite; }
+[id="skill-comprendre-planet"][data-level-percentage="60"],
+[id="skill-comprendre-planet"][data-level-percentage="70"] { animation: pulse-comprendre-strong 2s ease-in-out infinite; }
+[id="skill-comprendre-planet"][data-level-percentage="80"],
+[id="skill-comprendre-planet"][data-level-percentage="90"],
+[id="skill-comprendre-planet"][data-level-percentage="100"] { animation: pulse-comprendre-intense 1.5s ease-in-out infinite; }
+
+/* Application des animations - Concevoir */
+[id="skill-concevoir-planet"][data-level-percentage="10"],
+[id="skill-concevoir-planet"][data-level-percentage="20"] { animation: pulse-concevoir-weak 3s ease-in-out infinite; }
+[id="skill-concevoir-planet"][data-level-percentage="30"],
+[id="skill-concevoir-planet"][data-level-percentage="40"],
+[id="skill-concevoir-planet"][data-level-percentage="50"] { animation: pulse-concevoir-medium 2.5s ease-in-out infinite; }
+[id="skill-concevoir-planet"][data-level-percentage="60"],
+[id="skill-concevoir-planet"][data-level-percentage="70"] { animation: pulse-concevoir-strong 2s ease-in-out infinite; }
+[id="skill-concevoir-planet"][data-level-percentage="80"],
+[id="skill-concevoir-planet"][data-level-percentage="90"],
+[id="skill-concevoir-planet"][data-level-percentage="100"] { animation: pulse-concevoir-intense 1.5s ease-in-out infinite; }

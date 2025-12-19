@@ -31,6 +31,7 @@
     justify-content: space-between; /* Ecarte le texte du pourcentage */
     padding: 6px 10px;
     border-radius: 8px;
+    gap: 8px;
     background-color: rgba(255, 255, 255, 0.02); /* Fond semi-transparent */
     border: 0.6px solid; /* La couleur vient des variables ci-dessous */
     transition: transform 0.2s ease;
@@ -67,32 +68,39 @@
     border-color: #FFEA00;
     color: #FFEA00;
 }
-.color-yellow .dot { background-color: #FFEA00; }
+.color-yellow .svg { fill: #FFEA00; }
 
 /* Bleu */
 .color-blue {
     border-color: #00D0FF;
     color: #00D0FF;
 }
-.color-blue .dot { background-color: #00D0FF; }
+.color-blue .svg { fill: #00D0FF; }
 
 /* Violet */
 .color-purple {
     border-color: #FB00FF;
     color: #FB00FF;
 }
-.color-purple .dot { background-color: #FB00FF; }
+.color-purple .svg { fill: #FB00FF; }
 
 /* Vert / Teal */
 .color-green {
     border-color: #77FF00;
     color: #77FF00;
 }
-.color-green .dot { background-color: #77FF00; }
+.color-green .svg { fill: #77FF00; }
 
 /* Rouge */
 .color-red {
     border-color: #FF0000;
     color: #FF0000;
 }
-.color-red .dot { background-color: #FF0000; }
+.color-red .svg { fill: #FF0000; }
+
+
+svg{
+    width: 20px;
+    height: 20px;
+    
+}
