@@ -10,46 +10,35 @@ class ModalView {
   }
 
   dom(starData) {
-    const element = htmlToDOM(genericRenderer(template, starData));
+    let element = htmlToDOM(genericRenderer(template, starData));
     this.cardElement = element;
 
-    // --- SETUP DES ÉLÉMENTS (Slider, etc.) ---
-    const slider = this.cardElement.querySelector('.custom-slider');
+    let slider = this.cardElement.querySelector('.custom-slider');
     if (slider) {
         slider.addEventListener('input', (e) => {
-            this.setProgress(e.target.value);
+        this.setProgress(Number(e.target.value));
         });
     }
     
-    const overlay = document.createElement('div');
+    let overlay = document.createElement('div');
     overlay.className = 'modal-overlay';
     overlay.appendChild(element);
-
-    // Ajout d'un élément pour l'effet de flash global sur la carte
-    const flashOverlay = document.createElement('div');
+    let flashOverlay = document.createElement('div');
     flashOverlay.className = 'flash-effect';
     this.cardElement.appendChild(flashOverlay);
-
-    // --- ANIMATION D'OUVERTURE STYLE ANIMUS ---
-    // On utilise un petit setTimeout pour laisser le DOM s'insérer
     setTimeout(() => {
         Animation.animusReveal(this.cardElement);
     }, 50);
 
-    // --- GESTION DU BOUTON SAUVEGARDER (avec animation) ---
-    const saveBtn = this.cardElement.querySelector('.btn-primary');
+    let saveBtn = this.cardElement.querySelector('.btn-primary');
     if (saveBtn) {
-        const originalContent = saveBtn.innerHTML;
-        
-        // On stocke le listener pour pouvoir le retirer plus tard si besoin
-        const saveClickListener = (e) => {
-            e.preventDefault(); // Empêcher le comportement par défaut
 
-            // Création d'une timeline GSAP pour séquencer les effets
-            const tl = gsap.timeline();
+        let saveClickListener = (e) => {
+            e.preventDefault(); 
 
-            // --- SÉQUENCE D'ANIMATION ---
-            // 1. "Compression"
+
+            let tl = gsap.timeline();
+
             tl.to(saveBtn, {
                 scale: 0.9,
                 backgroundColor: "#fff",
@@ -57,7 +46,7 @@ class ModalView {
                 ease: "power2.in"
             });
 
-            // 2. "Transmission & Succès"
+
             tl.to(saveBtn, {
                 scale: 1.05,
                 backgroundColor: "#00ff9d",
@@ -72,7 +61,6 @@ class ModalView {
 
             });
 
-            // 3. "Feedback Global"
             tl.to(flashOverlay, {
                 opacity: 0.3,
                 yoyo: true,
@@ -80,26 +68,24 @@ class ModalView {
                 ease: "power2.inOut"
             }, "-=0.2");
 
-            // 4. "Retour au calme" - reste en état "Succès" définitif
+
             tl.to(saveBtn, {
                 scale: 1,
                 color: "#050e18",
                 boxShadow: "none",
                 ease: "power2.inOut",
                 onComplete: () => {
-                    // Affiche "Succès" et garde la couleur verte définitivement
+
                     saveBtn.innerHTML = 'Succès';
                 }
             });
         };
 
-        // On attache le listener pour la première fois
-        // { once: true } assure qu'il ne se déclenche qu'une fois, puis est retiré.
+
         saveBtn.addEventListener('click', saveClickListener, { once: true });
     }
 
-    // --- GESTION OVERLAY ET FERMETURE ---
-    const handleClose = () => {
+    let handleClose = () => {
         Animation.animusHide(this.cardElement, 0.5, () => {
             overlay.remove();
         });
@@ -111,7 +97,7 @@ class ModalView {
       }
     });
 
-    const closeBtn = element.querySelector('.close-btn');
+    let closeBtn = element.querySelector('.close-btn');
     if(closeBtn) {
       closeBtn.addEventListener('click', handleClose);
     }
@@ -129,8 +115,7 @@ class ModalView {
       console.error("L'élément du modal n'a pas été initialisé.");
       return;
     }
-    const historiqueList = this.cardElement.querySelector('.historique-list');
-    // Logique à implémenter ici
+    let historiqueList = this.cardElement.querySelector('.historique-list');
   }
 
   setProgress(percentage) {
@@ -139,17 +124,17 @@ class ModalView {
       return;
     }
 
-    const progressSlider = this.cardElement.querySelector('.custom-slider');
-    const progressValueText = this.cardElement.querySelector('.progress-value');
-    const circularProgress = this.cardElement.querySelector('.circular-progress');
-    const statut = this.cardElement.querySelector('.meta-status');
+    let progressSlider = this.cardElement.querySelector('.custom-slider');
+    let progressValueText = this.cardElement.querySelector('.progress-value');
+    let circularProgress = this.cardElement.querySelector('.circular-progress');
+    let statut = this.cardElement.querySelector('.meta-status');
 
     if (!progressSlider || !progressValueText || !circularProgress || !statut) {
         console.error("Un des éléments de progression du modal est introuvable.");
         return;
     }
 
-    const clampedPercentage = Math.max(0, Math.min(100, percentage));
+    let clampedPercentage = Math.max(0, Math.min(100, percentage));
 
     progressSlider.value = clampedPercentage;
     progressValueText.textContent = `${clampedPercentage}%`;

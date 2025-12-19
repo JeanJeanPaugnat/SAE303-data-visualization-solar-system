@@ -59,10 +59,8 @@ C.hoverOnStar = async function(event) {
     let starData = await Star.getStarDataById(starElement.dataset.acs);
     
     let userData = UserData.user;
-    console.log(userData);
     let acquisition = userData.acquisitions[starData.code];
     let percentage = acquisition ? acquisition.percentage : 0;
-    console.log(percentage);
     let tooltipContainer = document.getElementById('tooltip-container');
     
     if (!tooltipInstance) {
@@ -140,7 +138,6 @@ C.handler_clickStar = async function(event) {
         historyList.innerHTML = ''; // Clear previous items
         historyForAc.forEach(historyItemData => {
             let historiqueItem = new HistoriqueItemView();
-            console.log(historyItemData);
             historyList.appendChild(historiqueItem.dom(historyItemData));
         });
     } else {
@@ -224,14 +221,7 @@ C.importData = function() {
 
 let V = {
   rootPage: null,
-  solarSystem: null,
-  dataAcCompetence: {
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0
-  }
+    solarSystem: null
 };
 
 V.init = function() {
